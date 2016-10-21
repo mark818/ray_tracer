@@ -117,6 +117,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="lodepng.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="matrix4x4.cpp" />
     <ClCompile Include="ray_tracer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -124,9 +125,11 @@
     <ClInclude Include="image_buffer.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="lodepng.h" />
+    <ClInclude Include="matrix4x4.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="ray_tracer.h" />
     <ClInclude Include="vec3.h" />
+    <ClInclude Include="vec4.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
