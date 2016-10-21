@@ -1,4 +1,5 @@
-#pragma once
+#ifndef VEC3
+#define VEC3
 #include <math.h>
 #include <utility>
 #include <iostream>
@@ -82,16 +83,13 @@ struct vec3 {
 		return x == v.x && y == v.y && z == v.z;
 	}
 
-	double norm(void) const {
+	double norm() const {
 		return sqrt(x*x + y*y + z*z);
 	}
 
-	vec3& unit() {
+	vec3 unit() const {
 		double product = sqrt(sqr(x) + sqr(y) + sqr(z));
-		x /= product;
-		y /= product;
-		z /= product;
-		return *this;
+		return vec3{ x / product, y / product, z / product };
 	}
 };
 
@@ -110,3 +108,7 @@ inline vec3 cross(vec3 &v1, vec3 &v2) {
 inline vec3 operator* (const double& c, const vec3& v) {
 	return v * c;
 }
+
+using rgb = vec3;
+
+#endif

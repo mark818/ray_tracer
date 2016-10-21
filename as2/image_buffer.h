@@ -1,4 +1,5 @@
-#pragma once
+#ifndef IMAGE_BUFFER
+#define IMAGE_BUFFER
 #include <memory>
 #include "vec3.h"
 #include "lodepng.h"
@@ -14,4 +15,4 @@ private:
 	unsigned int width, height;
 	std::unique_ptr<vec3> data;
 };
-
+#endif

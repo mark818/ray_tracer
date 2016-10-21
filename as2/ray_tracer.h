@@ -1,4 +1,5 @@
-#pragma once
+#ifndef RAY_TRACER
+#define RAY_TRACER
 #include "light.h"
 #include "camera.h"
 #include "image_buffer.h"
@@ -15,4 +16,5 @@ private:
 	image_buffer buffer;
 	int msaa = 1;
 };
+#endif
 

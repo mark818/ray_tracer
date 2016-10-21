@@ -1,6 +1,9 @@
 #include <sstream>
 #include <iostream>
+#include <string>
 #include <vector>
+#include <array>
+#include <ctype.h>
 #include "ray_tracer.h"
 using namespace std;
 
@@ -62,107 +65,57 @@ inline void quit_with_error() {
 	exit(-1);
 }
 
+template <int N>
+array<double, N>&& readline(stringstream &ss) {
+	return array<double, N>();
+}
+
 int main(int argc, char *argv[]) {
-	char *filename = nullptr;
-	for (int i = 1; i < argc;) {
-		if (strcmp(argv[i], "-ka") == 0 && (i + 3 < argc)) {
-			double r = is_valid_double(argv[i + 1]);
-			double g = is_valid_double(argv[i + 2]);
-			double b = is_valid_double(argv[i + 3]);
-			if (is_within(r, 1) && is_within(g, 1) && is_within(b, 1)) {
-				set_ka(r, g, b);
-				i += 4;
+	string line, word, filename;
+	stringstream ss;
+	while (getline(cin, line)) {
+		ss << line;
+		ss >> word;
+		if (word == "cam") {
+			array<double, 15> &&arr = readline<15>(ss);
+
+		} else if (word == "sph") {
+			array<double, 4> &&arr = readline<4>(ss);
+		} else if (word == "tri") {
+			array<double, 9> &&arr = readline<9>(ss);
+		} else if (word == "obj") {
+			if (!ss.eof()) {
+				ss >> filename;
+			} else {
+				cerr << "File name missing.\n";
 			}
-			else
-				quit_with_error();
-		}
-		else if (strcmp(argv[i], "-kd") == 0 && (i + 3 < argc)) {
-			double r = is_valid_double(argv[i + 1]);
-			double g = is_valid_double(argv[i + 2]);
-			double b = is_valid_double(argv[i + 3]);
-			if (is_within(r, 1) && is_within(g, 1) && is_within(b, 1)) {
-				set_kd(r, g, b);
-				i += 4;
+		} else if (word == "ltp") {
+			array<double, 6> &&arr = readline<6>(ss);
+			int falloff = 0;
+			if (!ss.eof()) {
+				ss >> falloff;
+				if (falloff < 0 || falloff > 4) {
+					cerr << "Invalid falloff value.\n";
+					falloff = 0;
+				}
 			}
-			else
-				quit_with_error();
+		} else if (word == "ltd") {
+			array<double, 6> &&arr = readline<6>(ss);
+		} else if (word == "lta") {
+			array<double, 3> &&arr = readline<3>(ss);
+		} else if (word == "mat") {
+			array<double, 13> &&arr = readline<13>(ss);
+		} else if (word == "xft") {
+			array<double, 3> &&arr = readline<3>(ss);
+		} else if (word == "xfr") {
+			array<double, 3> &&arr = readline<3>(ss);
+		} else if (word == "xfs") {
+			array<double, 3> &&arr = readline<3>(ss);
+		} else if (word == "xfz") {
+
+		} else {
+			cerr << "Unsupported feature.\n";	
 		}
-		else if (strcmp(argv[i], "-ks") == 0 && (i + 3 < argc)) {
-			double r = is_valid_double(argv[i + 1]);
-			double g = is_valid_double(argv[i + 2]);
-			double b = is_valid_double(argv[i + 3]);
-			if (is_within(r, 1) && is_within(g, 1) && is_within(b, 1)) {
-				set_ks(r, g, b);
-				i += 4;
-			}
-			else
-				quit_with_error();
-		}
-		else if (strcmp(argv[i], "-spu") == 0 && (i + 1 < argc)) {
-			double val = is_valid_double(argv[i + 1]);
-			if (is_within(val, FLT_MAX)) {
-				set_spu(val);
-				i += 2;
-				isSp = false;
-			}
-			else
-				quit_with_error();
-		}
-		else if (strcmp(argv[i], "-spv") == 0 && (i + 1 < argc)) {
-			double val = is_valid_double(argv[i + 1]);
-			if (is_within(val, FLT_MAX)) {
-				set_spv(val);
-				i += 2;
-				isSp = false;
-			}
-			else
-				quit_with_error();
-		}
-		else if (strcmp(argv[i], "-sp") == 0 && (i + 1 < argc)) {
-			double val = is_valid_double(argv[i + 1]);
-			if (is_within(val, FLT_MAX)) {
-				set_sp(val);
-				i += 2;
-				isSp = true;
-			}
-			else
-				quit_with_error();
-		}
-		else if (strcmp(argv[i], "-pl") == 0 && (i + 6 < argc)) {
-			double x = is_valid_double(argv[i + 1]);
-			double y = is_valid_double(argv[i + 2]);
-			double z = is_valid_double(argv[i + 3]);
-			double r = is_valid_double(argv[i + 4]);
-			double g = is_valid_double(argv[i + 5]);
-			double b = is_valid_double(argv[i + 6]);
-			if (x > -FLT_MAX && y > -FLT_MAX && z > -FLT_MAX &&
-				is_within(r, FLT_MAX) && is_within(g, FLT_MAX) && is_within(b, FLT_MAX)) {
-				set_pl(x, y, z, r, g, b);
-				i += 7;
-			}
-			else
-				quit_with_error();
-		}
-		else if (strcmp(argv[i], "-dl") == 0 && (i + 6 < argc)) {
-			double x = is_valid_double(argv[i + 1]);
-			double y = is_valid_double(argv[i + 2]);
-			double z = is_valid_double(argv[i + 3]);
-			double r = is_valid_double(argv[i + 4]);
-			double g = is_valid_double(argv[i + 5]);
-			double b = is_valid_double(argv[i + 6]);
-			if (x > -FLT_MAX && y > -FLT_MAX && z > -FLT_MAX &&
-				is_within(r, FLT_MAX) && is_within(g, FLT_MAX) && is_within(b, FLT_MAX)) {
-				set_dl(x, y, z, r, g, b);
-				i += 7;
-			}
-			else
-				quit_with_error();
-		}
-		else if (strcmp(argv[i], "-o") == 0 && (i + 1 < argc)) {
-			filename = argv[i + 1];
-			i += 2;
-		}
-		else
-			quit_with_error();
+		ss.str(string());
 	}
 }
