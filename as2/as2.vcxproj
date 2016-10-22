@@ -114,22 +114,37 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="aabb.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="ellipsoid.cpp" />
+    <ClCompile Include="light.cpp" />
     <ClCompile Include="lodepng.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="matrix3x3.cpp" />
     <ClCompile Include="matrix4x4.cpp" />
     <ClCompile Include="ray_tracer.cpp" />
+    <ClCompile Include="triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="aabb.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="ellipsoid.h" />
     <ClInclude Include="image_buffer.h" />
+    <ClInclude Include="intersection.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="lodepng.h" />
+    <ClInclude Include="matrix3x3.h" />
     <ClInclude Include="matrix4x4.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="ray_tracer.h" />
+    <ClInclude Include="scene.h" />
+    <ClInclude Include="triangle.h" />
+    <ClInclude Include="util.h" />
     <ClInclude Include="vec3.h" />
     <ClInclude Include="vec4.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="README.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
