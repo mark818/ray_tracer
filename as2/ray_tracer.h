@@ -12,7 +12,7 @@ public:
   ray_tracer& operator =(const ray_tracer&) = delete;
 
 private:
-  camera cam;
+  //camera cam;
   image_buffer buffer;
   int msaa = 1;
 };

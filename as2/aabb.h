@@ -3,17 +3,28 @@
 
 #include "float.h"
 #include "vec3.h"
+#include "vector"
 #include "ray.h"
+
+class primitive;
 
 struct aabb {
   vec3 max;
   vec3 min;
+  aabb* left;
+  aabb* right; 
+  std::vector<primitive*> primitives;
 
-  aabb(const vec3 &min, const vec3 &max) 
-  : max(max), min(min) {}
+  aabb()
+    :max(vec3{-DBL_MAX, -DBL_MAX, -DBL_MAX}), min(vec3{ DBL_MAX,  DBL_MAX,  DBL_MAX}), left(0), right(0) {}
 
-  aabb(const vec3 &p)
-  : max(p), min(p) {}
+  aabb(const vec3 &min, const vec3 &max, aabb* left = 0, aabb* right = 0) 
+    :max(max), min(min), left(left), right(right) {}
+
+  aabb(vec3 &p)
+    :max(p), min(p), left(0), right(0) {}
+
+  bool is_leaf() {return ((left == 0) && (right == 0));}
 
   vec3 centroid() const {
     return (min + max) / 2;

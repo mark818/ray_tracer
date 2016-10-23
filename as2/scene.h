@@ -10,7 +10,7 @@ class primitive {
 public:
   virtual aabb get_aabb() const = 0;
 
-    virtual bool intersect(const ray& r) const = 0;
+  virtual bool intersect(const ray& r) const = 0;
 
   /**
    * Check if the given ray intersects with the primitive, if so, the input

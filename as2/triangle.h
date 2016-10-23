@@ -16,7 +16,7 @@ public:
   	aabb box(v1);
   	box.expand(v2);
   	box.expand(v3);
-	return box;
+	  return box;
   }
 
   bool intersect(const ray& r) const;
