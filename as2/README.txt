@@ -19,6 +19,10 @@ http://www.scratchapixel.com/lessons/3d-basic-rendering
 main:
 
 msaa need to be perfect square
+
+color rgb use 1 then convert to 255 when save
+
+
 shading now
 refraction??
 load obj later

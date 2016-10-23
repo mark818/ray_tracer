@@ -13,9 +13,9 @@ public:
 
   void set(unsigned int i, unsigned int j, rgb color) {
     unsigned int compressed = 0;
-    compressed += static_cast<unsigned int>(min(color.x * 256.0, 255.0)) << 16
-                        + static_cast<unsigned int>(min(color.y * 256.0, 255.0)) << 8
-                        + static_cast<unsigned int>(min(color.z * 256.0, 255.0));
+    compressed += (static_cast<unsigned int>(min(color.x * 256.0, 255.0)) << 16)
+               +  (static_cast<unsigned int>(min(color.y * 256.0, 255.0)) << 8)
+               +   static_cast<unsigned int>(min(color.z * 256.0, 255.0));
     data.get()[j * width + i] = compressed;
   }
 
