@@ -7,7 +7,6 @@ class primitive;
 struct intersection {
   double t;
   const primitive* p;
-  // normalized
-  vec3 n;
+  vec3 n; // normalized
 };
 #endif

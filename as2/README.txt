@@ -17,6 +17,7 @@ http://www.scratchapixel.com/lessons/3d-basic-rendering
 
 
 main:
-scene
-cur_matrix 4x4
-one camera
+put bvh in scene
+shading now
+refraction??
+load obj later

@@ -11,7 +11,7 @@ camera::camera(vec3 eye, vec3 ll, vec3 lr, vec3 ul, vec3 ur)
 
 ray camera::generate_ray(double u, double v) const {
   vec3 point = u*(v*ll + (1-v)*ul) + (1-u)*(v*lr + (1-v)*ur);
-  return ray(eye, point - eye);
+  return ray(eye, (point - eye).unit());
 }
 
 

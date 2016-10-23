@@ -84,7 +84,7 @@ int main(int argc, char *argv[]) {
   matrix4x4 cur_matrix = matrix4x4::identity();
   camera my_camera;
 
-  string line, word, filename;
+  string line, word, scene_name, filename = "img.png";
   stringstream ss;
   bool fail;
   while (getline(cin, line)) {
@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
       }
     } else if (word == "obj") {
       if (!ss.eof()) {
-        ss >> filename;
+        ss >> scene_name;
         if (!ss.eof()) {
           cerr << "Extra paramters.\n";
         }
@@ -194,10 +194,18 @@ int main(int argc, char *argv[]) {
       }
     } else if (word == "xfz") {
       cur_matrix = matrix4x4::identity();
+    } else if (word == "save") {
+      if (!ss.eof()) {
+        ss >> filename;
+        if (!ss.eof()) {
+          cerr << "Extra paramters.\n";
+        }
+      }
     } else {
       cerr << "Unsupported feature.\n"; 
     }
     ss.str(string());
   }
   scene my_scene(primitives, lights);
+
 }

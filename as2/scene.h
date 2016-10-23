@@ -26,7 +26,6 @@ public:
    */
   virtual bool intersect(const ray& r, intersection* i) const = 0;
 
-protected:
   vec3 ka;
   vec3 kd;
   vec4 ks;

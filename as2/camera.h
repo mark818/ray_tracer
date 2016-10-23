@@ -17,11 +17,13 @@ public:
   // u v range(0,1) as ratio
   ray generate_ray(double u, double v) const;
 
- private:
+  size_t screen_w, screen_h;
+
+private:
 
   vec3 eye, ll, lr, ul, ur;
 
-  size_t screen_w, screen_h;
+
 
 };
 #endif
