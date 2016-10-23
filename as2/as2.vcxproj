@@ -115,6 +115,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="aabb.cpp" />
+    <ClCompile Include="bvh.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="ellipsoid.cpp" />
     <ClCompile Include="light.cpp" />

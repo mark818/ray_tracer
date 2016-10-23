@@ -72,11 +72,11 @@ inline double dot(const vec4& u, const vec4& v) {
 		return u.x*v.x + u.y*v.y + u.z*v.z + u.w*v.w;;
 	}
 
-inline vec3 trim_to_vec3(vec4& v) {
+inline vec3 trim_to_vec3(const vec4& v) {
 		return vec3{v.x, v.y, v.z};
 	}
 
-inline vec3 trim_to_vec3(vec4&& v) {
+inline vec3 trim_to_vec3(const vec4&& v) {
 		return vec3{v.x, v.y, v.z};
 	}
 

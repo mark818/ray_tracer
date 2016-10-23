@@ -1,4 +1,5 @@
 #include <vector>
+#include <algorithm>
 #include "bvh.h"
 #include "vec3.h"
 #include "scene.h"
@@ -60,7 +61,7 @@ aabb* bvh::recursive_split(const vector<primitive*> &primitives, unsigned int ma
 
 }
 
-bool bvh::intersect(ray& r, aabb* node) {
+bool bvh::intersect(const ray& r, aabb* node) {
 	double min = 0;
 	double max = DBL_MAX;
 	if (node->intersect(r, min, max)) {
@@ -79,7 +80,7 @@ bool bvh::intersect(ray& r, aabb* node) {
 	}
 }
 
-bool bvh::intersect(ray& r, aabb* node, intersection *i) {
+bool bvh::intersect(const ray& r, aabb* node, intersection *i) {
 	double min = 0;
 	double max = DBL_MAX;
 	if (node->intersect(r, min, max)) {
