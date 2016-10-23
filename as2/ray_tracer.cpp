@@ -44,11 +44,14 @@ rgb ray_tracer::shade_pixel(size_t x, size_t y) {
       color += trace_ray(r);
     }
   }
+  // if (color.z > 0) { 
+  //   printf("get pixel's color: %zu %zu: %f %f %f\n", x, y, color.x, color.y, color.z);
+  // }
   return color;
 }
 
 rgb ray_tracer::trace_ray(const ray &r) {
-  rgb color;
+  rgb color{0, 0, 0};
   intersection i;
 
   if (!box.intersect(r, box.get_root(), &i)) {
@@ -56,6 +59,8 @@ rgb ray_tracer::trace_ray(const ray &r) {
   }
   color += calc_direct_light(r, &i);
   //color += calc_indrect_light(r, &i);
+  // printf("get pixel's color: %f %f %f\n", color.x, color.y, color.z);
+
   return color;
 }
 
@@ -92,11 +97,18 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
 
 			// where do we store ambient_l, right now it's in main
 			rgb ambient = modmul(p->ka, (I + sc.ambient_l));
+      rgb inter = modmul(p->kd, I);
+      // printf("%f %f %f\n", p->kd.x, p->kd.y, p->kd.z);
 			rgb diffuse = max(dot(l, n), 0.0)*modmul(p->kd, I);
 			rgb specular = pow(max(dot(r, v), 0.0), sp)*modmul(ks_vec3, I);
 			rgb col = ambient + diffuse + specular;
 			radiance += col;
 		}
+    // cout << poi.x << " " << poi.y << " " << poi.z << "\n";
+    // if ((poi.x > -0.5) && (poi.x < 0.5) && (poi.y > -0.5) && (poi.y< 0.5))
+    // {
+    //     cout << "color: " << radiance.x << " " << radiance.y << " " << radiance.z << "\n";
+    // }
 	}
   return radiance;
 }

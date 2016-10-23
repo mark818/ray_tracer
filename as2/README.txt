@@ -18,12 +18,13 @@ http://www.scratchapixel.com/lessons/3d-basic-rendering
 
 main:
 
-msaa need to be perfect square
-
 color rgb use 1 then convert to 255 when save
 
-why need filename in ray_tracer?
-
-shading now
+bounce
+ellipsoid?
 refraction??
 load obj later
+
+Argument NOTE
+1. msaa need to be perfect square
+2. first mat then triangle

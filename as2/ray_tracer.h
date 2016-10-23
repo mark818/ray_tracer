@@ -33,7 +33,7 @@ private:
   bvh box;
   image_buffer buffer;
   string filename;
-  int num_threads = 8;
+  int num_threads = 1;
   std::mutex lock, done;
   int msaa = 1;
 };
