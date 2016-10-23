@@ -2,6 +2,7 @@
 #include "vec4.h"
 #include <algorithm>
 #include <thread>
+#include <math.h>
 
 using namespace std;
 
@@ -32,7 +33,17 @@ void ray_tracer::worker(size_t left, size_t top, size_t right, size_t bottom) {
 }
 
 rgb ray_tracer::shade_pixel(size_t x, size_t y) {
-  return rgb();
+  double sqrt_msaa = sqrt(msaa);
+  rgb color{0, 0, 0};
+  for (int i = 0; i < sqrt_msaa; ++i) {
+    for (int j = 0; j < sqrt_msaa; ++j) {
+      double u = (x + (i/sqrt_msaa))/my_camera.screen_w;
+      double v = (y + (j/sqrt_msaa))/my_camera.screen_h;
+      ray r = my_camera.generate_ray(u, v);
+      color += trace_ray(r);
+    }
+  }
+  return color;
 }
 
 rgb ray_tracer::trace_ray(const ray &r) {
@@ -43,7 +54,7 @@ rgb ray_tracer::trace_ray(const ray &r) {
     return color;
   }
   color += calc_direct_light(r, &i);
-  color += calc_indrect_light(r, &i);
+  //color += calc_indrect_light(r, &i);
   return color;
 }
 
@@ -86,6 +97,7 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
 			radiance += col;
 		}
 	}
+  return radiance;
 }
 
 rgb ray_tracer::calc_indrect_light(const ray &r, intersection *i) {

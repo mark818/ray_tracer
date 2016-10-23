@@ -17,7 +17,8 @@ http://www.scratchapixel.com/lessons/3d-basic-rendering
 
 
 main:
-put bvh in scene
+
+msaa need to be perfect square
 shading now
 refraction??
 load obj later
