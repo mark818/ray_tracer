@@ -95,6 +95,9 @@
     <ClInclude Include="util.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="bvh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="README.txt" />

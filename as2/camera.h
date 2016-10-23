@@ -1,9 +1,10 @@
 #ifndef CAMERA
 #define CAMERA
+#include <string>
 #include "vec3.h"
 #include "ray.h"
 #include "matrix3x3.h"
-#include "string"
+
 
 using namespace std;
 

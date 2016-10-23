@@ -1,5 +1,5 @@
-#ifndef CGL_matrix4X4_H
-#define CGL_matrix4X4_H
+#ifndef MATRIX4X4
+#define MATRIX4X4
 
 #include "vec4.h"
 #include "matrix3x3.h"

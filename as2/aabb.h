@@ -1,9 +1,9 @@
 #ifndef AABB
 #define AABB
 
-#include "float.h"
+#include <float.h>
+#include <vector>
 #include "vec3.h"
-#include "vector"
 #include "ray.h"
 
 class primitive;
