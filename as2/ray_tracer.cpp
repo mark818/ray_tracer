@@ -21,13 +21,14 @@ void ray_tracer::begin() {
   for (int i = 0; i < num_threads; i++) {
     threads[i].join();
   }
+  buffer.write_to_png(filename.c_str());
 }
 
 void ray_tracer::worker(size_t left, size_t top, size_t right, size_t bottom) {
   for (size_t j = top; j < bottom; j++) {
     for (size_t i = left; i < right; i++) {
       rgb color = shade_pixel(i, j);
-      buffer[j * my_camera.screen_w + i] = color;
+      buffer.set(i, j, color);
     }
   }
 }
