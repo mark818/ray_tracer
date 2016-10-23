@@ -22,6 +22,7 @@ msaa need to be perfect square
 
 color rgb use 1 then convert to 255 when save
 
+why need filename in ray_tracer?
 
 shading now
 refraction??

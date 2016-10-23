@@ -211,4 +211,6 @@ int main(int argc, char *argv[]) {
     ss.clear();
   }
   scene my_scene(primitives, lights, ambient_l);
+  ray_tracer my_ray_tracer(my_camera, my_scene, filename);
+  my_ray_tracer.begin();
 }
