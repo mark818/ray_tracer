@@ -24,7 +24,6 @@ public:
   ray_tracer& operator =(const ray_tracer&) = delete;
 
 private:
-  void test();
 	void worker(size_t left, size_t top, size_t right, size_t bottom);
 	rgb shade_pixel(size_t x, size_t y);
 	rgb trace_ray(const ray &r);

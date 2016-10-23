@@ -5,7 +5,6 @@
 
 using namespace std;
 
-void ray_tracer::test() {}
 void ray_tracer::begin() {
   vector<thread> threads;
   threads.reserve(num_threads);
