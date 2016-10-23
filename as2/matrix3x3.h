@@ -85,6 +85,8 @@ class matrix3x3 {
   // returns A-B
   matrix3x3 operator-( const matrix3x3& B ) const;
 
+  matrix3x3 operator+( const matrix3x3& B ) const;
+
   // returns c*A
   matrix3x3 operator*( double c ) const;
 
@@ -97,7 +99,7 @@ class matrix3x3 {
   // divides each element by x
   void operator/=( double x );
 
-  protected:
+protected:
 
   // column vectors
   vec3 entries[3];

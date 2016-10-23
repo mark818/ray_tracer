@@ -1,5 +1,6 @@
 #include <vector>
 #include "bvh.h"
+#include "vec3.h"
 #include "scene.h"
 using namespace std;
 

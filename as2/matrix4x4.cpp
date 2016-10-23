@@ -2,6 +2,7 @@
 
 #include <math.h>
 
+// first entry is the first column
 double& matrix4x4::operator()(int i, int j) {
   return entries[j][i];
 }
@@ -10,12 +11,21 @@ const double& matrix4x4::operator()(int i, int j) const {
   return entries[j][i];
 }
 
+
+vec4& matrix4x4::column(int i) {
+  return entries[i];
+}
+
+const vec4& matrix4x4::column(int i) const {
+  return entries[i];
+}
+
 void matrix4x4::zero(double val) {
   // sets all elements to val
   entries[0] =
-    entries[1] =
-    entries[2] =
-    entries[3] = vec4{ val, val, val, val };
+  entries[1] =
+  entries[2] =
+  entries[3] = vec4{ val, val, val, val };
 }
 
 double matrix4x4::det() const {
@@ -97,6 +107,18 @@ matrix4x4 matrix4x4::operator-(const matrix4x4& B) const {
   return C;
 }
 
+matrix4x4 matrix4x4::operator+(const matrix4x4& B) const {
+  const matrix4x4& A(*this);
+  matrix4x4 C;
+
+  for (int i = 0; i < 4; i++)
+    for (int j = 0; j < 4; j++) {
+      C(i, j) = A(i, j) + B(i, j);
+    }
+
+  return C;
+}
+
 matrix4x4 matrix4x4::operator*(double c) const {
   const matrix4x4& A(*this);
   matrix4x4 B;
@@ -156,13 +178,13 @@ matrix4x4 matrix4x4::operator*(const matrix4x4& B) const {
 
 vec4 matrix4x4::operator*(const vec4& x) const {
   return x[0] * entries[0] + // Add up products for each matrix column.
-    x[1] * entries[1] +
-    x[2] * entries[2] +
-    x[3] * entries[3];
+         x[1] * entries[1] +
+         x[2] * entries[2] +
+         x[3] * entries[3];
 }
 
 // Naive Transposition.
-matrix4x4 matrix4x4::transpose() const {
+matrix4x4 matrix4x4::T() const {
   const matrix4x4& A(*this);
   matrix4x4 B;
 
@@ -237,10 +259,14 @@ matrix4x4 outer(const vec4& u, const vec4& v) {
 }
 
 
-vec4& matrix4x4::column(int i) {
-  return entries[i];
-}
 
-const vec4& matrix4x4::column(int i) const {
-  return entries[i];
+matrix4x4 extend_to_matrix4x4(const matrix3x3& m) {
+  matrix4x4 m4;
+
+  m4.column(0) = vec4{m(0, 0), m(1, 0), m(2, 0), 0};
+  m4.column(1) = vec4{m(0, 1), m(1, 1), m(2, 1), 0};
+  m4.column(2) = vec4{m(0, 2), m(1, 2), m(2, 2), 0};
+  m4.column(3) = vec4{0, 0, 0, 1};
+
+  return m4;
 }

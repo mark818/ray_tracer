@@ -10,7 +10,8 @@ using namespace std;
 class camera {
 public:
 
-  camera(vec3 eye, vec3 ll, vec3 lr, vec3 ul, vec3 ur);
+
+  camera(vec3 eye = vec3{0,0,0}, vec3 ll = vec3{0,0,0}, vec3 lr = vec3{0,0,0}, vec3 ul = vec3{0,0,0}, vec3 ur = vec3{0,0,0});
 
   // u v range(0,1) as ratio
   ray generate_ray(double u, double v) const;
@@ -18,8 +19,6 @@ public:
  private:
 
   vec3 eye, ll, lr, ul, ur;
-  // Computes pos, screenXDir, screenYDir from target, r, phi, theta.
-  void compute_position();
 
   size_t screen_w, screen_h;
 

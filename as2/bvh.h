@@ -1,7 +1,6 @@
 #ifndef BVH
 #define BVH
 #include "aabb.h"
-#include "vec3.h"
 #include "intersection.h"
 
 class bvh {

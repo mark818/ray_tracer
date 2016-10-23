@@ -64,12 +64,21 @@ struct vec4 {
 	}
 };
 
- vec4 operator* (const double& c, const vec4& v) {
-	 return vec4{ c * v.x, c * v.y, c * v.z, c*v.w };
-}
+inline vec4 operator* (const double& c, const vec4& v) {
+		return vec4{ c * v.x, c * v.y, c * v.z, c*v.w };
+	}
 
- double dot(const vec4& u, const vec4& v) {
-	return u.x*v.x + u.y*v.y + u.z*v.z + u.w*v.w;;
-}
+inline double dot(const vec4& u, const vec4& v) {
+		return u.x*v.x + u.y*v.y + u.z*v.z + u.w*v.w;;
+	}
+
+inline vec3 trim_to_vec3(vec4& v) {
+		return vec3{v.x, v.y, v.z};
+	}
+
+inline vec3 trim_to_vec3(vec4&& v) {
+		return vec3{v.x, v.y, v.z};
+	}
+
 #endif
 

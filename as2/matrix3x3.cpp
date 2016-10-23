@@ -80,6 +80,19 @@ matrix3x3 matrix3x3::operator-( const matrix3x3& B ) const {
   return C;
 }
 
+matrix3x3 matrix3x3::operator+( const matrix3x3& B ) const {
+  const matrix3x3& A( *this );
+  matrix3x3 C;
+
+  for( int i = 0; i < 3; i++ )
+  for( int j = 0; j < 3; j++ )
+  {
+     C(i,j) = A(i,j) + B(i,j);
+  }
+
+  return C;
+}
+
 matrix3x3 matrix3x3::operator*( double c ) const {
   const matrix3x3& A( *this );
   matrix3x3 B;

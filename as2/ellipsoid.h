@@ -1,13 +1,14 @@
 #ifndef ELLIPSOID
 #define ELLIPSOID
 #include "scene.h"
-#include "vec3.h"
+#include "vec4.h"
 
 class ellipsoid : public primitive {
 public:
 
-  ellipsoid(vec3& center, vec3& ellipsoid_cof, double r)
-    : center(center), ellipsoid_cof(ellipsoid_cof), r(r), r2(r*r), cof_sqr(modmul(ellipsoid_cof, ellipsoid_cof)) { }
+  ellipsoid(vec3& center, vec3& ellipsoid_cof, double r, vec3 ka, vec3 kd, vec4 ks, vec3 kr)
+    : primitive(ka, kd, ks, kr), center(center), ellipsoid_cof(ellipsoid_cof), r(r), r2(r*r), 
+      cof_sqr(modmul(ellipsoid_cof, ellipsoid_cof)) {}
 
   aabb get_aabb() {
     vec3 v = vec3{ellipsoid_cof.x*r, ellipsoid_cof.y*r, ellipsoid_cof.z*r};

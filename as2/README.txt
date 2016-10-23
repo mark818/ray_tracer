@@ -14,3 +14,9 @@ Location of Source Code:
 References:
 1. RayTriangle Intersection referference source:
 http://www.scratchapixel.com/lessons/3d-basic-rendering
+
+
+main:
+scene
+cur_matrix 4x4
+one camera

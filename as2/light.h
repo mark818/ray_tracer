@@ -18,14 +18,15 @@ private:
 
 class point_light:public light {
 public:
-  point_light(const rgb& rad, const vec3& light_pos)
-    : radiance(rad), pos(light_pos) {}
+  point_light(const rgb& rad, const vec3& light_pos, const int falloff)
+    : radiance(rad), pos(light_pos), falloff(falloff) {}
 
   rgb get_ray(vec3& p, vec3* dir_to_light, double* max_t) const;
 
 private:
   vec3 pos;
   rgb radiance;
+  int falloff;
 };
 
 #endif

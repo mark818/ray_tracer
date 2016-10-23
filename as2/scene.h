@@ -1,14 +1,17 @@
 #ifndef SCENE
 #define SCENE
 #include "vector"
-#include "vec3.h"
+#include "vec4.h"
 #include "ray.h"
 #include "intersection.h"
 #include "aabb.h"
 
 class primitive {
 public:
-  virtual aabb get_aabb() const = 0;
+  primitive(vec3 ka, vec3 kd, vec4 ks, vec3 kr):
+    ka(ka), kd(kd), ks(ks), kr(kr) {}
+
+  virtual aabb get_aabb() = 0;
 
   virtual bool intersect(const ray& r) const = 0;
 
@@ -23,6 +26,11 @@ public:
    */
   virtual bool intersect(const ray& r, intersection* i) const = 0;
 
+protected:
+  vec3 ka;
+  vec3 kd;
+  vec4 ks;
+  vec3 kr;
 };
 
 /**

@@ -1,6 +1,6 @@
 #ifndef TRIANGLE
 #define TRIANGLE
-#include "vec3.h"
+#include "vec4.h"
 #include "aabb.h"
 #include "scene.h"
 #include "intersection.h"
@@ -9,8 +9,8 @@
 class triangle : public primitive {
 public:
 
-  triangle(vec3 A, vec3 B, vec3 C)
-    : v1(A), v2(B), v3(C) { }
+  triangle(vec3 A, vec3 B, vec3 C, vec3 ka, vec3 kd, vec4 ks, vec3 kr)
+    : primitive(ka, kd, ks, kr), v1(A), v2(B), v3(C) { }
 
   aabb get_aabb() {
   	aabb box(v1);
