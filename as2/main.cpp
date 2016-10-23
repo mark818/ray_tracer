@@ -12,7 +12,7 @@
 #include "ellipsoid.h"
 using namespace std;
 
-const double PI = 3.141592653589793;
+const double PI = 3.141592653589793238462643383279502884197169399375106;
 
 template <int N>
 array<double, N> readline(stringstream &ss, bool *fail) {
@@ -206,6 +206,6 @@ int main(int argc, char *argv[]) {
     }
     ss.str(string());
   }
-  scene my_scene(primitives, lights);
+  scene my_scene(primitives, lights, ambient_l);
 
 }

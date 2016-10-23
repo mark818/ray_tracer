@@ -42,15 +42,14 @@ public:
 };
 
 struct scene {
-    scene(const std::vector<primitive *>& primitives,
-          const std::vector<light *>& lights)
-    : primitives(primitives), lights(lights) { }
+  scene(const std::vector<primitive *>& primitives, const std::vector<light *>& lights, rgb &ambient_l)
+    : primitives(primitives), lights(lights), ambient_l(ambient_l) { }
 
-    scene(const scene &&rhs) : primitives(std::move(rhs.primitives)), lights(std::move(rhs.lights)) {}
+    scene(const scene &&rhs) : primitives(std::move(rhs.primitives)), lights(std::move(rhs.lights)), ambient_l(std::move(rhs.ambient_l)) {}
 
     std::vector<primitive*> primitives;
-
     std::vector<light*> lights;
+    rgb ambient_l;
 };
 
 #endif
