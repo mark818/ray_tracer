@@ -88,6 +88,9 @@ int main(int argc, char *argv[]) {
   stringstream ss;
   bool fail;
   while (getline(cin, line)) {
+    if (line.empty()) {
+      continue;
+    }
     ss << line;
     ss >> word;
     if (word == "cam") {
@@ -205,7 +208,7 @@ int main(int argc, char *argv[]) {
       cerr << "Unsupported feature.\n"; 
     }
     ss.str(string());
+    ss.clear();
   }
   scene my_scene(primitives, lights, ambient_l);
-
 }
