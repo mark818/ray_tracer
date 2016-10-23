@@ -1,5 +1,5 @@
 #include "aabb.h"
-
+#include <algorithm>
 
 void aabb::expand(const aabb& box) {
   min.x = std::min(min.x, box.min.x);

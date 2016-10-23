@@ -35,7 +35,7 @@ struct vec3 {
     return *this;
   }
 
-  vec3 operator- () {
+  vec3 operator- () const {
     return vec3{ -x, -y, -z };
   }
 

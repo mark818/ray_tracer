@@ -11,7 +11,7 @@ public:
   primitive(vec3 ka, vec3 kd, vec4 ks, vec3 kr):
     ka(ka), kd(kd), ks(ks), kr(kr) {}
 
-  virtual aabb get_aabb() = 0;
+  virtual aabb get_aabb() const = 0;
 
   virtual bool intersect(const ray& r) const = 0;
 
@@ -45,6 +45,8 @@ struct scene {
     scene(const std::vector<primitive *>& primitives,
           const std::vector<light *>& lights)
     : primitives(primitives), lights(lights) { }
+
+    scene(const scene &&rhs) : primitives(std::move(rhs.primitives)), lights(std::move(rhs.lights)) {}
 
     std::vector<primitive*> primitives;
 

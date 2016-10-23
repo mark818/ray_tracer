@@ -21,7 +21,7 @@ struct aabb {
   aabb(const vec3 &min, const vec3 &max, aabb* left = 0, aabb* right = 0) 
     :max(max), min(min), left(left), right(right) {}
 
-  aabb(vec3 &p)
+  aabb(const vec3 &p)
     :max(p), min(p), left(0), right(0) {}
 
   bool is_leaf() {return ((left == 0) && (right == 0));}

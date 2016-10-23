@@ -1,13 +1,13 @@
 #include "ray_tracer.h"
 #include "vec4.h"
-
-ray_tracer::ray_tracer() {}
+#include <algorithm>
+using namespace std;
 
 rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
 
   size_t depth = r.depth; // bounce level
-  vec3 &o = r.o; //origin
-  vec3 &d = r.d; //direction
+  const vec3 &o = r.o; //origin
+  const vec3 &d = r.d; //direction
 
   double t = i->t; //distance, length
   const primitive* p = i->p;
@@ -21,7 +21,7 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
 
 		vec3 dir_to_light;
 		double max_t = 0;
-		rgb I = get_ray(poi, &dir_to_light, &max_t);
+		rgb I = light->get_ray(poi, &dir_to_light, &max_t);
 		vec3 l = dir_to_light.unit();
 		ray l_ray(poi, l, max_t);
 
