@@ -12,10 +12,8 @@ class ray_tracer {
 public:
 
   ray_tracer(camera &my_camera, scene &sc, string &filename) 
-  	: my_camera(std::move(my_camera)), sc(std::move(sc)), 
-  		buffer(my_camera.screen_w, my_camera.screen_h), filename(filename) {
-    box.recursive_split(sc.primitives, 5);
-  }
+  	: my_camera(std::move(my_camera)), sc(std::move(sc)), box(sc.primitives),
+  		buffer(my_camera.screen_w, my_camera.screen_h), filename(filename) { }
   ~ray_tracer() = default;
 
   void begin();

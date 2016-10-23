@@ -6,6 +6,10 @@
 class bvh {
 public:
 
+  bvh(const std::vector<primitive*> &primitives) { 
+    root = recursive_split(primitives, 5); 
+  }
+
   aabb* get_root();
 
   aabb* recursive_split(const std::vector<primitive*> &primitives, unsigned int max_leaf);
