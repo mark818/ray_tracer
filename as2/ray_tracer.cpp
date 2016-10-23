@@ -31,12 +31,12 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
 			vec3 r = ((-1.0)*l + (2.0*dot(l, n))*n).unit(); //reflected direction normal vector 
 			vec3 v = -d; //view normal vector
 
-			double sp = (light->ks).w;
-			vec3 ks_vec3 = trim_to_vec3(light->ks);
+			double sp = (p->ks).w;
+			vec3 ks_vec3 = trim_to_vec3(p->ks);
 
 			// where do we store ambient_l, right now it's in main
-			rgb ambient = modmul(light.ka, (I + ambient_l));
-			rgb diffuse = max(dot(l, n), 0.0)*modmul(light.kd, I);
+			rgb ambient = modmul(p->ka, (I + ambient_l));
+			rgb diffuse = max(dot(l, n), 0.0)*modmul(p->kd, I);
 			rgb specular = pow(max(dot(r, v), 0.0), sp)*modmul(ks_vec3, I);
 			rgb col = ambient + diffuse + specular;
 			radiance += col;
