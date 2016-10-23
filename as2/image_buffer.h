@@ -10,28 +10,30 @@ using namespace std;
 class image_buffer {
   typedef size_t size_t;
 public:
-  image_buffer(size_t width = 0, size_t height = 0) :width(width), height(height), data(width * height, 0)  {}
+  image_buffer(size_t width = 0, size_t height = 0) :width(width), height(height), data(width * height)  {}
 
   void set(size_t i, size_t j, rgb color) {
-    size_t compressed = 0;
-    if (color.z > 0) { 
-      printf("get pixel's color: %zu %zu: %f %f %f\n", i, j, min(color.x * 256.0, 255.0), min(color.y * 256.0, 255.0), min(color.z * 256.0, 255.0));
+    if (color == vec3{ 0, 0, 0 }) {
+      data[j * width + i].r = data[j*width + i].g = data[j*width + i].b = 255;
+    } else {
+      data[j * width + i].r = static_cast<int>(min(color.x * 256.0, 255.0));
+      data[j * width + i].g = static_cast<int>(min(color.y * 256.0, 255.0));
+      data[j * width + i].b = static_cast<int>(min(color.z * 256.0, 255.0));
     }
-    compressed += (127 << 24)
-               +  (static_cast<size_t>(min(color.z * 256.0, 255.0)) << 16)
-               +  (static_cast<size_t>(min(color.y * 256.0, 255.0)) << 8)
-               +   static_cast<size_t>(min(color.x * 256.0, 255.0));
-    data[j * width + i] = compressed;
+    
   }
 
   void write_to_png(const char *filename) {
-    lodepng::encode(filename, reinterpret_cast<unsigned char*>(&data[0]), width, height, LCT_RGBA);
+    lodepng::encode(filename, reinterpret_cast<unsigned char*>(&data[0]), width, height, LCT_RGB);
   }
 
   ~image_buffer() = default;
 
 private:
+  struct RGB {
+    unsigned char r = 0, g = 0, b = 0;
+  };
   size_t width, height;
-  vector<size_t> data;
+  vector<RGB> data;
 };
 #endif
