@@ -25,13 +25,13 @@ void ray_tracer::begin() {
 }
 
 void ray_tracer::worker(size_t left, size_t top, size_t right, size_t bottom) {
-   // for (size_t j = top; j < bottom; j++) {
-   //   for (size_t i = left; i < right; i++) {
-   //     rgb color = shade_pixel(i, j);
-   //     buffer.set(i, j, color);
-   //   }
-   // }
-  rgb color = shade_pixel(300, 600);
+    for (size_t j = top; j < bottom; j++) {
+      for (size_t i = left; i < right; i++) {
+        rgb color = shade_pixel(i, j);
+        buffer.set(i, j, color);
+      }
+    }
+  //rgb color = shade_pixel(300, 600);
   //cout << endl << color.x << color.y << color.z << endl;
 }
 
@@ -47,9 +47,9 @@ rgb ray_tracer::shade_pixel(size_t x, size_t y) {
       color += trace_ray(r);
     }
   }
-  if (color.z > 0) { 
-    printf("get pixel's color: %zu %zu: %f %f %f\n", x, y, color.x, color.y, color.z);
-  }
+  //if (color.z > 0) { 
+  //  printf("get pixel's color: %zu %zu: %f %f %f\n", x, y, color.x, color.y, color.z);
+  //}
   return (color/msaa);
 }
 
@@ -90,7 +90,7 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
 		double max_t = 0;
 		rgb I = light->get_ray(poi, &dir_to_light, &max_t);
 		vec3 l = dir_to_light.unit();
-		ray l_ray(poi, l, max_t);
+		ray l_ray(poi + 1e-10 * l, l, max_t);
 
 		if (!box.intersect(l_ray, box.get_root())) {
 

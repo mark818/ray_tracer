@@ -28,7 +28,7 @@ struct ray {
   * \param depth depth of the ray
   */
   ray(const vec3& o, const vec3& d, double max_t, size_t depth = 0)
-    : o(o), d(d), min(0.0), max(DBL_MAX), depth(depth) {
+    : o(o), d(d), min(0.0), max(max_t), depth(depth) {
     inv_d = vec3{ 1 / d.x, 1 / d.y, 1 / d.z };
     sign[0] = (inv_d.x < 0);
     sign[1] = (inv_d.y < 0);
