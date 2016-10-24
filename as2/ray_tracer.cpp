@@ -9,14 +9,11 @@ using namespace std;
 void ray_tracer::begin() {
   vector<thread> threads;
   threads.reserve(num_threads);
-  size_t width_per_tile = static_cast<int>(my_camera.screen_w / num_threads);
   size_t height_per_tile = static_cast<int>(my_camera.screen_h / num_threads);
   for (int i = 0; i < num_threads; i++) {
-    size_t left = width_per_tile * i;
-    size_t right = min(width_per_tile * (i + 1), my_camera.screen_w);
     size_t top = height_per_tile * i;
     size_t bottom = min(height_per_tile * (i + 1), my_camera.screen_h);
-    threads.emplace_back(&ray_tracer::worker, this, left, top, right, bottom);
+    threads.emplace_back(&ray_tracer::worker, this, 0, top, my_camera.screen_w, bottom);
   }
   for (int i = 0; i < num_threads; i++) {
     threads[i].join();
