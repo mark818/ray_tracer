@@ -76,10 +76,10 @@ bool triangle::intersect(const ray& r, intersection* i) const {
         return false; // they are parallel so they don't intersect ! 
  
     // compute d parameter using equation 2
-    double d = dot(n, v1); 
+    double d = - dot(n, v1); 
  
     // compute t (equation 3)
-    double t = (dot(n, r.o) + d) / not_parallel; 
+    double t = - (dot(n, r.o) + d) / not_parallel; 
     // check if the triangle is in behind the ray
     if (t < 0) return false; // the triangle is behind 
  

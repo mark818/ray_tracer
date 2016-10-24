@@ -1,5 +1,6 @@
 #include "aabb.h"
 #include <algorithm>
+#include <math.h>
 
 void aabb::expand(const aabb& box) {
   min.x = std::min(min.x, box.min.x);
@@ -27,10 +28,20 @@ bool aabb::intersect(const ray& r, double& t0, double& t1) const {
   bounds[0] = min;
   bounds[1] = max;
 
-  tmin = (bounds[r.sign[0]].x - r.o.x) * r.inv_d.x;
-  tmax = (bounds[1-r.sign[0]].x - r.o.x) * r.inv_d.x;
-  tymin = (bounds[r.sign[1]].y - r.o.y) * r.inv_d.y;
-  tymax = (bounds[1-r.sign[1]].y - r.o.y) * r.inv_d.y;
+  if (isinf(r.inv_d.x)) {
+    tmin = -DBL_MAX;
+    tmax = DBL_MAX;
+  } else {
+    tmin = (bounds[r.sign[0]].x - r.o.x) * r.inv_d.x;
+    tmax = (bounds[1 - r.sign[0]].x - r.o.x) * r.inv_d.x;
+  }
+  if (isinf(r.inv_d.y)) {
+    tymin = -DBL_MAX;
+    tymax = DBL_MAX;
+  } else {
+    tymin = (bounds[r.sign[1]].y - r.o.y) * r.inv_d.y;
+    tymax = (bounds[1 - r.sign[1]].y - r.o.y) * r.inv_d.y;
+  }
 
   if ((tmin > tymax) || (tymin > tmax)) {
     return false;
@@ -43,6 +54,10 @@ bool aabb::intersect(const ray& r, double& t0, double& t1) const {
     tmax = tymax;
     t1 = tmax;
   }
+  if (isinf(r.inv_d.z)) {
+    return true;
+  }
+
   tzmin = (bounds[r.sign[2]].z - r.o.z) * r.inv_d.z;
   tzmax = (bounds[1-r.sign[2]].z - r.o.z) * r.inv_d.z;
   if ((tmin > tzmax || tzmin > tmax)) {
