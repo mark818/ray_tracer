@@ -25,12 +25,14 @@ void ray_tracer::begin() {
 }
 
 void ray_tracer::worker(size_t left, size_t top, size_t right, size_t bottom) {
-  for (size_t j = top; j < bottom; j++) {
-    for (size_t i = left; i < right; i++) {
-      rgb color = shade_pixel(i, j);
-      buffer.set(i, j, color);
-    }
-  }
+  // for (size_t j = top; j < bottom; j++) {
+  //   for (size_t i = left; i < right; i++) {
+  //     rgb color = shade_pixel(i, j);
+  //     buffer.set(i, j, color);
+  //   }
+  // }
+  rgb color = shade_pixel(400, 400);
+
 }
 
 rgb ray_tracer::shade_pixel(size_t x, size_t y) {
@@ -51,6 +53,7 @@ rgb ray_tracer::shade_pixel(size_t x, size_t y) {
 }
 
 rgb ray_tracer::trace_ray(const ray &r) {
+  printf("ray.o: %f %f %f  ray.d %f %f %f\n", r.o.x, r.o.y, r.o.z, r.d.x, r.d.y, r.d.z);
   rgb color{0, 0, 0};
   intersection i;
 
@@ -73,7 +76,7 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
   double t = i->t; //distance, length
   const primitive* p = i->p;
   vec3 &n = i->n; // normalized
-
+  printf("t: %f  n: %f %f %f\n", t, n.x, n.y, n.z);
 	vec3 poi = o + t*d;
 	poi = poi.unit();
 

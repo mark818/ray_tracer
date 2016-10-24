@@ -17,11 +17,16 @@ public:
     if (color.z > 0) { 
       printf("get pixel's color: %zu %zu: %f %f %f\n", i, j, min(color.x * 256.0, 255.0), min(color.y * 256.0, 255.0), min(color.z * 256.0, 255.0));
     }
+    if (i== 400 || j == 400) {
+      data[j * width + i] = static_cast<size_t>(-1);
+    } else {
     compressed += (255 << 24)
                +  (static_cast<size_t>(min(color.z * 256.0, 255.0)) << 16)
                +  (static_cast<size_t>(min(color.y * 256.0, 255.0)) << 8)
                +   static_cast<size_t>(min(color.x * 256.0, 255.0));
-    data[j * width + i] = compressed;
+    data[j * width + i] = compressed;  
+    }
+    
   }
 
   void write_to_png(const char *filename) {
