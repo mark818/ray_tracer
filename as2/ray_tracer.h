@@ -11,9 +11,10 @@
 class ray_tracer {
 public:
 
-  ray_tracer(camera &my_camera, scene &sc, string &filename) 
+  ray_tracer(camera &my_camera, scene &sc, string &filename, int num_threads, int msaa, size_t depth) 
   	: my_camera(std::move(my_camera)), sc(std::move(sc)), box(sc.primitives),
-  		buffer(my_camera.screen_w, my_camera.screen_h), filename(filename) { }
+  		buffer(my_camera.screen_w, my_camera.screen_h), filename(filename),
+      num_threads(num_threads), msaa(msaa), depth(depth) { }
   ~ray_tracer() = default;
 
   void begin();
@@ -33,9 +34,11 @@ private:
   bvh box;
   image_buffer buffer;
   string filename;
-  int num_threads = 1;
+  int num_threads;
   std::mutex lock, done;
-  int msaa = 1;
+  int msaa;
+  size_t depth;
+
 };
 #endif
 

@@ -84,6 +84,9 @@ int main(int argc, char *argv[]) {
   matrix4x4 cur_matrix = matrix4x4::identity();
   camera my_camera;
 
+  int depth = 0;
+  int num_threads = 1;
+  int msaa = 1;
   string line, word, scene_name, filename = "img.png";
   stringstream ss;
   bool fail;
@@ -204,6 +207,39 @@ int main(int argc, char *argv[]) {
           cerr << "Extra paramters.\n";
         }
       }
+    } else if (word == "d") {
+      if (!ss.eof()) {
+        ss >> depth;
+        if (depth < 0) {
+          depth = 0;
+          cerr << "Unsupported feature.\n"; 
+        }
+        if (!ss.eof()) {
+          cerr << "Extra paramters.\n";
+        }
+      }
+    } else if (word == "t") {
+      if (!ss.eof()) {
+        ss >> num_threads;
+        if (num_threads <= 0) {
+          num_threads = 1;
+          cerr << "Unsupported feature.\n"; 
+        }
+        if (!ss.eof()) {
+          cerr << "Extra paramters.\n";
+        }
+      }
+    } else if (word == "aa") {
+      if (!ss.eof()) {
+        ss >> msaa;
+        if (msaa <= 0) {
+          msaa = 1;
+          cerr << "Unsupported feature.\n"; 
+        }
+        if (!ss.eof()) {
+          cerr << "Extra paramters.\n";
+        }
+      }
     } else {
       cerr << "Unsupported feature.\n"; 
     }
@@ -211,6 +247,6 @@ int main(int argc, char *argv[]) {
     ss.clear();
   }
   scene my_scene(primitives, lights, ambient_l);
-  ray_tracer my_ray_tracer(my_camera, my_scene, filename);
+  ray_tracer my_ray_tracer(my_camera, my_scene, filename, num_threads, msaa, depth);
   my_ray_tracer.begin();
 }

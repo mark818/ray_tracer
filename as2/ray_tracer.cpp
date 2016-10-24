@@ -25,13 +25,13 @@ void ray_tracer::begin() {
 }
 
 void ray_tracer::worker(size_t left, size_t top, size_t right, size_t bottom) {
-   for (size_t j = top; j < bottom; j++) {
-     for (size_t i = left; i < right; i++) {
-       rgb color = shade_pixel(i, j);
-       buffer.set(i, j, color);
-     }
-   }
-  //rgb color = shade_pixel(400, 400);
+   // for (size_t j = top; j < bottom; j++) {
+   //   for (size_t i = left; i < right; i++) {
+   //     rgb color = shade_pixel(i, j);
+   //     buffer.set(i, j, color);
+   //   }
+   // }
+  rgb color = shade_pixel(300, 600);
   //cout << endl << color.x << color.y << color.z << endl;
 }
 
@@ -43,15 +43,17 @@ rgb ray_tracer::shade_pixel(size_t x, size_t y) {
       double u = (x + (i/sqrt_msaa))/my_camera.screen_w;
       double v = (y + (j/sqrt_msaa))/my_camera.screen_h;
       ray r = my_camera.generate_ray(u, v);
+      r.depth = depth;
       color += trace_ray(r);
     }
   }
-  // if (color.z > 0) { 
-  //   printf("get pixel's color: %zu %zu: %f %f %f\n", x, y, color.x, color.y, color.z);
-  // }
-  return color;
+  if (color.z > 0) { 
+    printf("get pixel's color: %zu %zu: %f %f %f\n", x, y, color.x, color.y, color.z);
+  }
+  return (color/msaa);
 }
 
+// ray here is like eye ray
 rgb ray_tracer::trace_ray(const ray &r) {
  // printf("ray.o: %f %f %f  ray.d %f %f %f\n", r.o.x, r.o.y, r.o.z, r.d.x, r.d.y, r.d.z);
   rgb color{0, 0, 0};
@@ -60,10 +62,11 @@ rgb ray_tracer::trace_ray(const ray &r) {
   if (!box.intersect(r, box.get_root(), &i)) {
     return color;
   }
-  color += calc_direct_light(r, &i);
-  //color += calc_indrect_light(r, &i);
+  color += calc_direct_light(r, &i);  
+  if (r.depth > 0) {
+    color += calc_indrect_light(r, &i);
+  }
   // printf("get pixel's color: %f %f %f\n", color.x, color.y, color.z);
-
   return color;
 }
 
@@ -76,7 +79,7 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
   double t = i->t; //distance, length
   const primitive* p = i->p;
   vec3 &n = i->n; // normalized
-  printf("t: %f  n: %f %f %f\n", t, n.x, n.y, n.z);
+  // printf("t: %f  n: %f %f %f\n", t, n.x, n.y, n.z);
 	vec3 poi = o + t*d;
 	poi = poi.unit();
 
@@ -89,7 +92,6 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
 		vec3 l = dir_to_light.unit();
 		ray l_ray(poi, l, max_t);
 
-		// wait for implementing in scene for bvh , ned to use bvh here to intersect
 		if (!box.intersect(l_ray, box.get_root())) {
 
 			vec3 r = ((-1.0)*l + (2.0*dot(l, n))*n).unit(); //reflected direction normal vector 
@@ -98,7 +100,6 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
 			double sp = (p->ks).w;
 			vec3 ks_vec3 = trim_to_vec3(p->ks);
 
-			// where do we store ambient_l, right now it's in main
 			rgb ambient = modmul(p->ka, (I + sc.ambient_l));
       rgb inter = modmul(p->kd, I);
       // printf("%f %f %f\n", p->kd.x, p->kd.y, p->kd.z);
@@ -117,5 +118,22 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
 }
 
 rgb ray_tracer::calc_indrect_light(const ray &r, intersection *i) {
-  return rgb();
+  size_t depth = r.depth; // bounce level
+  const vec3 &o = r.o; //origin
+  const vec3 &d = r.d; //direction
+
+  double t = i->t; //distance, length
+  const primitive* p = i->p;
+  vec3 &n = i->n; // normalized
+  // printf("t: %f  n: %f %f %f\n", t, n.x, n.y, n.z);
+  vec3 l = (-d).unit();
+  vec3 poi = o + t*d;
+  vec3 out = ((-1.0)*l + (2.0*dot(l, n))*n).unit(); //normalized
+  ray more_r(poi, out, depth-1);
+  rgb color = trace_ray(more_r);
+
+  rgb radiance = modmul(color, p->kr);
+
+  return radiance;
 }
+

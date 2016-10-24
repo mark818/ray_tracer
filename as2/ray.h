@@ -11,7 +11,7 @@ struct ray {
   vec3 inv_d; 
   int sign[3]; 
 
-  ray(const vec3 &o, const vec3 &d, int depth = 0)
+  ray(const vec3 &o, const vec3 &d, size_t depth = 0)
     : o(o), d(d), min(0.0), max(DBL_MAX), depth(depth) {
     inv_d = vec3{ 1 / d.x, 1 / d.y, 1 / d.z };
     sign[0] = (inv_d.x < 0);
@@ -27,7 +27,7 @@ struct ray {
   * \param max_t max t value for the ray (if it's actually a segment)
   * \param depth depth of the ray
   */
-  ray(const vec3& o, const vec3& d, double max_t, int depth = 0)
+  ray(const vec3& o, const vec3& d, double max_t, size_t depth = 0)
     : o(o), d(d), min(0.0), max(DBL_MAX), depth(depth) {
     inv_d = vec3{ 1 / d.x, 1 / d.y, 1 / d.z };
     sign[0] = (inv_d.x < 0);
