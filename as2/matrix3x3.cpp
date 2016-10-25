@@ -20,7 +20,7 @@ const vec3& matrix3x3::operator[]( int j ) const {
 
 void matrix3x3::zero( double val ) {
   // sets all elements to val
-  entries[0] = entries[1] = entries[2] = vec3{ val, val, val };
+  entries[0] = entries[1] = entries[2] = vec3( val, val, val );
 }
 
 double matrix3x3::det( void ) const {

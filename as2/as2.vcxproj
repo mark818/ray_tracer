@@ -108,6 +108,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <CallingConvention>VectorCall</CallingConvention>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -124,6 +125,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="matrix3x3.cpp" />
     <ClCompile Include="matrix4x4.cpp" />
+    <ClCompile Include="obj_parser.cpp" />
     <ClCompile Include="ray_tracer.cpp" />
     <ClCompile Include="triangle.cpp" />
   </ItemGroup>
@@ -138,6 +140,7 @@
     <ClInclude Include="lodepng.h" />
     <ClInclude Include="matrix3x3.h" />
     <ClInclude Include="matrix4x4.h" />
+    <ClInclude Include="obj_parser.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="ray_tracer.h" />
     <ClInclude Include="scene.h" />

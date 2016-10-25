@@ -8,7 +8,7 @@
 
 class primitive {
 public:
-  primitive(vec3 ka, vec3 kd, vec4 ks, vec3 kr):
+  primitive(vec3 ka, vec3 kd, vec4 ks, vec3 kr) :
     ka(ka), kd(kd), ks(ks), kr(kr) {}
 
   virtual aabb get_aabb() const = 0;
@@ -35,21 +35,23 @@ public:
 /**
  * Interface for lights in the scene.
  */
-class light {
-public:
-    virtual rgb get_ray(vec3& p, vec3* wi, double* max_t) const = 0;
+ class light {
+ public:
+   virtual rgb get_ray(vec3& p, vec3* wi, double* max_t) const = 0;
 
-};
+ };
 
-struct scene {
-  scene(const std::vector<primitive *>& primitives, const std::vector<light *>& lights, rgb &ambient_l)
-    : primitives(primitives), lights(lights), ambient_l(ambient_l) { }
+ struct scene {
+   scene() {}
 
-    scene(const scene &&rhs) : primitives(std::move(rhs.primitives)), lights(std::move(rhs.lights)), ambient_l(std::move(rhs.ambient_l)) {}
+   scene(const std::vector<primitive *>& primitives, const std::vector<light *>& lights, rgb &ambient_l)
+     : primitives(primitives), lights(lights), ambient_l(ambient_l) {}
 
-    std::vector<primitive*> primitives;
-    std::vector<light*> lights;
-    rgb ambient_l;
-};
+   scene(const scene &&rhs) : primitives(std::move(rhs.primitives)), lights(std::move(rhs.lights)), ambient_l(std::move(rhs.ambient_l)) {}
+
+   std::vector<primitive*> primitives;
+   std::vector<light*> lights;
+   rgb ambient_l;
+ };
 
 #endif

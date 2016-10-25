@@ -5,15 +5,17 @@
 #include "float.h"
 
 struct ray {
-  size_t depth;  
-  vec3 o, d; 
+  typedef unsigned int size_t;
+
+  size_t depth;
+  vec3 o, d;
   mutable double min, max;
-  vec3 inv_d; 
-  int sign[3]; 
+  vec3 inv_d;
+  int sign[3];
 
   ray(const vec3 &o, const vec3 &d, size_t depth = 0)
     : o(o), d(d), min(0.0), max(DBL_MAX), depth(depth) {
-    inv_d = vec3{ 1 / d.x, 1 / d.y, 1 / d.z };
+    inv_d = vec3(1 / d.x, 1 / d.y, 1 / d.z);
     sign[0] = (inv_d.x < 0);
     sign[1] = (inv_d.y < 0);
     sign[2] = (inv_d.z < 0);
@@ -29,7 +31,7 @@ struct ray {
   */
   ray(const vec3& o, const vec3& d, double max_t, size_t depth = 0)
     : o(o), d(d), min(0.0), max(max_t), depth(depth) {
-    inv_d = vec3{ 1 / d.x, 1 / d.y, 1 / d.z };
+    inv_d = vec3(1 / d.x, 1 / d.y, 1 / d.z);
     sign[0] = (inv_d.x < 0);
     sign[1] = (inv_d.y < 0);
     sign[2] = (inv_d.z < 0);

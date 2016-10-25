@@ -4,7 +4,7 @@
 #include "scene.h"
 
 
-class directional_light:public light{
+class directional_light :public light {
 public:
   directional_light(const rgb& rad, const vec3& light_dir)
     : radiance(rad), dir_to_light((-1)*light_dir) {}

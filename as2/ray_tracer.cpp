@@ -34,7 +34,7 @@ void ray_tracer::worker(size_t left, size_t top, size_t right, size_t bottom) {
 
 rgb ray_tracer::shade_pixel(size_t x, size_t y) {
   double sqrt_msaa = sqrt(msaa);
-  rgb color{0, 0, 0};
+  rgb color(0, 0, 0);
   for (int i = 0; i < sqrt_msaa; ++i) {
     for (int j = 0; j < sqrt_msaa; ++j) {
       double u = (x + (i/sqrt_msaa))/my_camera.screen_w;
@@ -53,7 +53,7 @@ rgb ray_tracer::shade_pixel(size_t x, size_t y) {
 // ray here is like eye ray
 rgb ray_tracer::trace_ray(const ray &r) {
  // printf("ray.o: %f %f %f  ray.d %f %f %f\n", r.o.x, r.o.y, r.o.z, r.d.x, r.d.y, r.d.z);
-  rgb color{0, 0, 0};
+  rgb color(0, 0, 0);
   intersection i;
 
   if (!box.intersect(r, box.get_root(), &i)) {
@@ -80,7 +80,7 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
 	vec3 poi = o + t*d;
 	poi = poi.unit();
 
-	rgb radiance = { 0, 0, 0 };
+	rgb radiance(0, 0, 0);
 	for (auto light : sc.lights) {
 
 		vec3 dir_to_light;

@@ -14,10 +14,10 @@ public:
   static matrix4x4 identity();
 
   matrix4x4(double * data) {
-    for( int i = 0; i < 4; i++ ) {
-      for( int j = 0; j < 4; j++ ) {
-          // Transpostion happens within the () query.
-          (*this)(i,j) = data[i*4 + j];
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 4; j++) {
+        // Transpostion happens within the () query.
+        (*this)(i, j) = data[i * 4 + j];
       }
     }
   }

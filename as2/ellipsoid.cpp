@@ -55,7 +55,7 @@ bool ellipsoid::intersect(const ray& r, intersection* i) const {
 }
 
 vec3 ellipsoid::normal(vec3 p) const {
-  vec3 direction = vec3{ 0, 0, 0};
+  vec3 direction;
   direction.x = cof_sqr.y*cof_sqr.z*(p.x-center.x);
   direction.y = cof_sqr.x*cof_sqr.z*(p.y-center.y);
   direction.z = cof_sqr.x*cof_sqr.y*(p.z-center.z);

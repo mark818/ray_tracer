@@ -10,6 +10,7 @@
 #include "matrix4x4.h"
 #include "triangle.h"
 #include "ellipsoid.h"
+#include "obj_parser.h"
 using namespace std;
 
 const double PI = 3.141592653589793238462643383279502884197169399375106;
@@ -72,14 +73,15 @@ array<double, N> readline(stringstream &ss, int *falloff, bool *fail) {
   return arr;
 }
 
-int main(int argc, char *argv[]) {
+int __cdecl main(int argc, char *argv[]) {
+  std::ios::sync_with_stdio(false);
   std::vector<primitive *> primitives;
   std::vector<light *> lights;
-  rgb ambient_l{0, 0, 0};
-  vec3 ka{0, 0, 0};
-  vec3 kd{0, 0, 0};
-  vec4 ks{0, 0, 0, 0};
-  vec3 kr{0, 0, 0};
+  rgb ambient_l(0, 0, 0);
+  vec3 ka(0, 0, 0);
+  vec3 kd(0, 0, 0);
+  vec4 ks(0, 0, 0, 0);
+  vec3 kr(0, 0, 0);
 
   matrix4x4 cur_matrix = matrix4x4::identity();
   camera my_camera;
@@ -99,18 +101,18 @@ int main(int argc, char *argv[]) {
     if (word == "cam") {
       array<double, 15> arr = readline<15>(ss, &fail);
       if (!fail) {
-        vec3 eye{arr[0], arr[1], arr[2]};
-        vec3 ll{arr[3], arr[4], arr[5]};
-        vec3 lr{arr[6], arr[7], arr[8]};
-        vec3 ul{arr[9], arr[10], arr[11]};
-        vec3 ur{arr[12], arr[13], arr[14]};
+        vec3 eye(arr[0], arr[1], arr[2]);
+        vec3 ll(arr[3], arr[4], arr[5]);
+        vec3 lr(arr[6], arr[7], arr[8]);
+        vec3 ul(arr[9], arr[10], arr[11]);
+        vec3 ur(arr[12], arr[13], arr[14]);
         my_camera = camera(eye, ll, lr, ul, ur);
       }
     } else if (word == "sph") {
       array<double, 4> arr = readline<4>(ss, &fail);
       if (!fail) {      
-        vec3 center{arr[0], arr[1], arr[2]};
-        vec3 ellipsoid_cof{(double)1, (double)1, (double)1};
+        vec3 center(arr[0], arr[1], arr[2]);
+        vec3 ellipsoid_cof((double)1, (double)1, (double)1);
         double r = arr[3];
         // do transformation
         primitives.push_back(new ellipsoid(center, ellipsoid_cof, r, ka, kd, ks, kr));
@@ -118,9 +120,9 @@ int main(int argc, char *argv[]) {
     } else if (word == "tri") {
       array<double, 9> arr = readline<9>(ss, &fail);
       if (!fail) {
-        vec4 v1{arr[0], arr[1], arr[2], 0};
-        vec4 v2{arr[3], arr[4], arr[5], 0};
-        vec4 v3{arr[6], arr[7], arr[8], 0};
+        vec4 v1(arr[0], arr[1], arr[2], 0);
+        vec4 v2(arr[3], arr[4], arr[5], 0);
+        vec4 v3(arr[6], arr[7], arr[8], 0);
         vec3 A = trim_to_vec3(cur_matrix*v1);
         vec3 B = trim_to_vec3(cur_matrix*v2);
         vec3 C = trim_to_vec3(cur_matrix*v3);
@@ -139,35 +141,35 @@ int main(int argc, char *argv[]) {
       int falloff;
       array<double, 6> arr = readline<6>(ss, &falloff, &fail);
       if (!fail) {
-        vec3 light_pos = vec3{arr[0], arr[1], arr[2]};
-        vec3 rad = vec3{arr[3], arr[4], arr[5]};
+        vec3 light_pos = vec3(arr[0], arr[1], arr[2]);
+        vec3 rad = vec3(arr[3], arr[4], arr[5]);
         lights.push_back(new point_light(rad, light_pos, falloff));
       }
     } else if (word == "ltd") {
       array<double, 6> arr = readline<6>(ss, &fail);
       if (!fail) {
-        vec3 light_dir = vec3{arr[0], arr[1], arr[2]};
-        vec3 rad = vec3{arr[3], arr[4], arr[5]};
+        vec3 light_dir = vec3(arr[0], arr[1], arr[2]);
+        vec3 rad = vec3(arr[3], arr[4], arr[5]);
         lights.push_back(new directional_light(rad, light_dir));
       }
     } else if (word == "lta") {
       array<double, 3> arr = readline<3>(ss, &fail);
       if (!fail) {
-        ambient_l = rgb{arr[0], arr[1], arr[2]};
+        ambient_l = rgb(arr[0], arr[1], arr[2]);
       }
     } else if (word == "mat") {
       array<double, 13> arr = readline<13>(ss, &fail);
       if (!fail) {
-        ka = vec3{arr[0], arr[1], arr[2]};
-        kd = vec3{arr[3], arr[4], arr[5]};
-        ks = vec4{arr[6], arr[7], arr[8], arr[9]};
-        kr = vec3{arr[10], arr[11], arr[12]};
+        ka = vec3(arr[0], arr[1], arr[2]);
+        kd = vec3(arr[3], arr[4], arr[5]);
+        ks = vec4(arr[6], arr[7], arr[8], arr[9]);
+        kr = vec3(arr[10], arr[11], arr[12]);
       }
     } else if (word == "xft") {
       array<double, 3> arr = readline<3>(ss, &fail);
       if (!fail) {
         matrix4x4 m = matrix4x4::identity();
-        m.column(3) = vec4{arr[0], arr[1], arr[2], (double)1};
+        m.column(3) = vec4(arr[0], arr[1], arr[2], (double)1);
         cur_matrix = m * cur_matrix;
       }
     } else if (word == "xfr") {
@@ -176,13 +178,13 @@ int main(int argc, char *argv[]) {
         double theta = sqrt(sqr(arr[0]) + sqr(arr[1]) + sqr(arr[2])) / 180 * PI;
         double sin_theta = sin(theta);
         double cos_theta = cos(theta);
-        double data[] = {0, -arr[2], arr[1], 
+        double data[] = { 0, -arr[2], arr[1],
                          arr[2], 0, -arr[0],
-                         -arr[1], arr[0], 0};
+                         -arr[1], arr[0], 0 };
         matrix3x3 Rx = matrix3x3(data);
-        double r_data[] = {arr[0]*arr[0], arr[0]*arr[1], arr[0]*arr[2],
-                           arr[1]*arr[0], arr[1]*arr[1], arr[2]*arr[2],
-                           arr[2]*arr[0], arr[2]*arr[1], arr[2]*arr[2]};
+        double r_data[] = { arr[0] * arr[0], arr[0] * arr[1], arr[0] * arr[2],
+                           arr[1] * arr[0], arr[1] * arr[1], arr[2] * arr[2],
+                           arr[2] * arr[0], arr[2] * arr[1], arr[2] * arr[2] };
         matrix3x3 rr = matrix3x3(r_data);
         matrix3x3 m = rr + sin_theta * Rx - cos_theta * Rx * Rx;
         matrix4x4 m4 = extend_to_matrix4x4(m);
@@ -191,7 +193,7 @@ int main(int argc, char *argv[]) {
     } else if (word == "xfs") {
       array<double, 3> arr = readline<3>(ss, &fail);
       if (!fail) {
-        double data[] = {arr[0], 0, 0, 0,
+        double data[] = { arr[0], 0, 0, 0,
                          0, arr[1], 0, 0,
                          0, 0, arr[2], 0,
                          0, 0, 0, 1 };
@@ -245,6 +247,11 @@ int main(int argc, char *argv[]) {
     }
     ss.str(string());
     ss.clear();
+  }
+  if (!scene_name.empty()) {
+    obj_parser parser(scene_name);
+    vector<primitive *>from_file = parser.parse();
+    primitives.insert(primitives.end(), from_file.begin(), from_file.end());
   }
   scene my_scene(primitives, lights, ambient_l);
   ray_tracer my_ray_tracer(my_camera, my_scene, filename, num_threads, msaa, depth);

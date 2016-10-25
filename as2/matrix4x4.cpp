@@ -25,7 +25,7 @@ void matrix4x4::zero(double val) {
   entries[0] =
   entries[1] =
   entries[2] =
-  entries[3] = vec4{ val, val, val, val };
+  entries[3] = vec4( val, val, val, val );
 }
 
 double matrix4x4::det() const {
@@ -263,10 +263,10 @@ matrix4x4 outer(const vec4& u, const vec4& v) {
 matrix4x4 extend_to_matrix4x4(const matrix3x3& m) {
   matrix4x4 m4;
 
-  m4.column(0) = vec4{m(0, 0), m(1, 0), m(2, 0), 0};
-  m4.column(1) = vec4{m(0, 1), m(1, 1), m(2, 1), 0};
-  m4.column(2) = vec4{m(0, 2), m(1, 2), m(2, 2), 0};
-  m4.column(3) = vec4{0, 0, 0, 1};
+  m4.column(0) = vec4(m(0, 0), m(1, 0), m(2, 0), 0);
+  m4.column(1) = vec4(m(0, 1), m(1, 1), m(2, 1), 0);
+  m4.column(2) = vec4(m(0, 2), m(1, 2), m(2, 2), 0);
+  m4.column(3) = vec4(0, 0, 0, 1);
 
   return m4;
 }
