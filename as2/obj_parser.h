@@ -8,15 +8,21 @@
 
 class obj_parser {
 public:
-  obj_parser(std::string filename) :filename(filename) {}
+  obj_parser(std::string filename, vec3 &ka, vec3 &kd, vec4 &ks, vec3 &kr) :
+    filename(filename), ka(ka), kd(kd), ks(ks), kr(kr) {}
   std::vector<primitive*> parse();
   obj_parser(const obj_parser&) = delete;
   ~obj_parser() = default;
 
 private:
-  void string_split_4(char *buf, std::array<char *, 4> &arr, char delim = ' ');
-  bool parse_face(std::array<char *, 4> &line, unsigned int vert[], unsigned int norm[], size_t vert_len, size_t norm_len);
+  bool parse_face(std::string &&);
+  bool parse_face_index(const char *line, std::vector<unsigned int> &, int &);
+ 
   std::string filename;
+  std::vector<vec3> vertices, normals;
+  std::vector<primitive*> primitives;
+  vec3 ka, kd, kr;
+  vec4 ks;
 };
 
 #endif

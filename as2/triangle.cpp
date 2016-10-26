@@ -1,5 +1,4 @@
 #include "triangle.h"
-#include "util.h"
 
 void triangle::get_barycentric_coordinate(const vec3 &p, double &u, double &v, double &w) const {
   vec3 p_minus_a = p - v1;
@@ -21,7 +20,7 @@ bool triangle::intersect(const ray& r) const {
  
   // check if ray and plane are parallel ?
   double not_parallel = dot(n, r.d); 
-  if (fabs(not_parallel) < kEpsilon) // almost 0 
+  if (fabs(not_parallel) < 1e-31) // almost 0 
       return false; // they are parallel so they don't intersect ! 
  
   // compute d parameter using equation 2
@@ -30,7 +29,7 @@ bool triangle::intersect(const ray& r) const {
   // compute t (equation 3)
   double t = -(dot(n, r.o) + d) / not_parallel; 
   // check if the triangle is in behind the ray
-  if (t < 0 || t > r.max) return false; // the triangle is behind 
+  if (t <= 0 || t > r.max) return false; // the triangle is behind 
  
   // compute the intersection point using equation 1
   vec3 inter_p = r.o + t * r.d; 
@@ -76,7 +75,7 @@ bool triangle::intersect(const ray& r, intersection* i) const {
  
   // check if ray and plane are parallel ?
   double not_parallel = dot(n, r.d); 
-  if (fabs(not_parallel) < kEpsilon) // almost 0 
+  if (fabs(not_parallel) < 1e-31) // almost 0 
       return false; // they are parallel so they don't intersect ! 
  
   // compute d parameter using equation 2
@@ -85,7 +84,7 @@ bool triangle::intersect(const ray& r, intersection* i) const {
   // compute t (equation 3)
   double t = - (dot(n, r.o) + d) / not_parallel; 
   // check if the triangle is in behind the ray
-  if (t < 0) return false; // the triangle is behind 
+  if (t <= 0) return false; // the triangle is behind 
  
   // compute the intersection point using equation 1
   vec3 inter_p = r.o + t * r.d; 

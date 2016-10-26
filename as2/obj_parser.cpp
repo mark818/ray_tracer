@@ -1,6 +1,7 @@
 #include "obj_parser.h"
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string.h>
 #include <math.h>
 #include <algorithm>
@@ -12,111 +13,93 @@ vector<primitive*> obj_parser::parse() {
     cerr << "File not found.\n";
     return vector<primitive*>();
   }
-
-  vector<vec3> vertices, normals;
+  
   vertices.reserve(1000);
   normals.reserve(1000);
-  vector<primitive*> primitives;
   primitives.reserve(1000);
 
-  int vt_length = 0;
-
-  char buf[100];
-  array<char *, 4> arr;
-  while (f.getline(buf, 100)) {
-    if (buf[0] == '#' || buf[0] == 0) {
-      continue;
-    }
-    string_split_4(buf, arr);
-    if (strcmp(arr[0], "#") == 0) {
-      continue;
-    } else if (strcmp(arr[0], "v") == 0) {
-      double x = atof(arr[1]);
-      double y = atof(arr[2]);
-      double z = atof(arr[3]);
+  string buf;
+  
+  while (getline(f, buf)) {
+    // skip spaces in the front
+    string line(find_if_not(buf.begin(), buf.end(), isspace), buf.end());
+    if (line.length() == 0) continue;
+    if (line[0] == 'v') {
+      double x, y, z;
+      sscanf(&line[2], "%lf%lf%lf", &x, &y, &z);
       vertices.emplace_back(x, y, z);
-    } else if (strcmp(arr[0], "vn") == 0) {
-      double x = atof(arr[1]);
-      double y = atof(arr[2]);
-      double z = atof(arr[3]);
-      normals.emplace_back(x, y, z);
-    } else if (strcmp(arr[0], "vt") == 0) {
+    } else if (line[0] == 'v') {
+      if (line[1] == 'n') {
+        double x, y, z;
+        sscanf(&line[2], "%lf%lf%lf", &x, &y, &z);
+        normals.emplace_back(x, y, z);
+      } else if (line[0] == 't') {}
       // texture not implemented
-    } else if (strcmp(arr[0], "f") == 0) {
-      unsigned int vert[3], norm[3];
-      if (!parse_face(arr, vert, norm, vertices.size(), normals.size())) {
+    } else if (line[0] == 'f') {
+      if (!parse_face(move(line))) {
         return vector<primitive*>();
       }
-      const vec3 empty;
-      const vec4 empty4;
-      primitives.push_back(new triangle(vertices[vert[0]], vertices[vert[1]], vertices[vert[2]],
-      normals[norm[0]], normals[norm[1]], normals[norm[2]], empty, empty, empty4, empty));
     }
   }
   return primitives;
 }
 
-void obj_parser::string_split_4(char *buf, array<char *, 4> &arr, char delim) {
-  // skip spaces in the front
-  while (*buf == ' ') {
-    buf++;
-  }
-  auto iter = arr.begin();
-  bool record = false;
-  char *last = buf;
-  unsigned int length = strlen(buf);
-  for (int i = 0; i <= length; i++) {
-    if (buf[i] == ' ') {
-      if (!record) {
-        buf[i] = 0;
-        record = true;
-      }
-    } else {
-      if (record) {
-        record = false;
-        *iter++ = last;
-        last = buf + i;
-      } else if (buf[i] == 0) {
-        *iter = last;
-      }
-    }
-  }
-}
-
-bool obj_parser::parse_face(std::array<char*, 4>& line, unsigned int vert[], unsigned int norm[], size_t vert_len, size_t norm_len) {
+bool obj_parser::parse_face(string &&line) {
   static int length = 0;
-  unsigned int vertex, texture, normal;
-  for (int i = 1; i < 3; i++) {
-    // first use, determine face data format  1 = v/t   2 = v//n  3 = v/t/n
-    if (length == 0) {
-      char *cur = line[i];
-      for (int i = 0; i < strlen(cur); i++) {
-        if (cur[i] == '/') {
-          if (cur[i + 1] == '/') {
-            length = 2;
-            break;
-          } else if (length == 1) {
-            length = 3;
-            break;
-          } else {
-            length = 1;
-          }
-        }
-      }
-    }
-    if (length == 2) {
-      sscanf(line[1], "%ud%ud", &vertex, &normal);
-    } else {
-      sscanf(line[1], "%ud%ud%ud", &vertex, &texture, &normal); // texture not implemented
-    }
-
-    if (vertex >= vert_len || normal >= norm_len) {
-      cerr << "Index out of bound.\n";
+  static stringstream ss;
+  ss.clear();
+  ss.str(line);
+  string word;
+  ss >> word;
+  if (word != "f") {
+    cerr << "Invalid paramter.\n";
+    return false;
+  }
+  vector<unsigned int> indices;
+  indices.reserve(10);
+  while (!ss.eof()) {
+    ss >> word;
+    if (!parse_face_index(word.c_str(), indices, length)) {
       return false;
     }
-    vert[i - 1] = vertex;
-    norm[i - 1] = normal;
+  }
+  if (length == 3) {
+    for (int i = 1; i < indices.size() - 1; i++) {
+      primitives.push_back(new triangle(vertices[0], vertices[i], vertices[i + 1],
+                                                            normals[0], normals[i], normals[i + 1], ka, kd, ks, kr));
+    }
+  } else {
+    for (int i = 1; i < indices.size() - 1; i++) {
+      primitives.push_back(new triangle(vertices[0], vertices[i], vertices[i + 1], ka, kd, ks, kr));
+    }
   }
   return true;
 }
 
+bool obj_parser::parse_face_index(const char *line, vector<unsigned int> &indices, int &length) {
+  unsigned int vertex, texture, normal = -1;
+  if (length == 0) {
+    // first use, determine face data format  1 = v/t   2 = v//n  3 = v/t/n
+    length = sscanf(line, "%ud%*[/]%ud/%ud", &vertex, &texture, &normal);
+    if (length == 2 && normal == static_cast<unsigned int>(-1)) {
+      length = 1;
+    }
+  }
+  
+  if (length == 1) {
+    sscanf(line, "%ud", &vertex);
+  } else if (length == 2) {
+    sscanf(line, "%ud%ud", &vertex, &normal);
+  } else {
+    sscanf(line, "%ud%ud%ud", &vertex, &texture, &normal); // texture not implemented
+  }
+  if (vertex > vertices.size() || length > 1 && normal > normals.size()) {
+    cerr << "Obj file f index out of bound.\n";
+    return false;
+  }
+  indices.push_back(vertex-1);
+  if (length > 2) {
+    indices.push_back(normal-1);
+  }
+  return true;
+}

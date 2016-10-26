@@ -9,7 +9,7 @@ camera::camera(vec3 eye, vec3 ll, vec3 lr, vec3 ul, vec3 ur)
 
 ray camera::generate_ray(double u, double v) const {
   // vec3 point = ll + u * (lr - ll) + v * (ul - ll);
-  vec3 point = (1-u)*(v*ll + (1-v)*ul) + u*(v*lr + (1-v)*ur);
+  vec3 point = (1-u)*((1-v)*ll + v*ul) + u*((1-v)*lr + v*ur);
   return ray(eye, (point - eye).unit());
 }
 

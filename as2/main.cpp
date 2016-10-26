@@ -96,7 +96,7 @@ int __cdecl main(int argc, char *argv[]) {
     if (line.empty()) {
       continue;
     }
-    ss << line;
+    ss.str(move(line));
     ss >> word;
     if (word == "cam") {
       array<double, 15> arr = readline<15>(ss, &fail);
@@ -133,7 +133,10 @@ int __cdecl main(int argc, char *argv[]) {
         ss >> scene_name;
         if (!ss.eof()) {
           cerr << "Extra paramters.\n";
-        }
+        } 
+        obj_parser parser(scene_name, ka, kd, ks, kr);
+        vector<primitive *>from_file = parser.parse();
+        primitives.insert(primitives.end(), from_file.begin(), from_file.end());
       } else {
         cerr << "File name missing.\n";
       }
@@ -245,13 +248,10 @@ int __cdecl main(int argc, char *argv[]) {
     } else {
       cerr << "Unsupported feature.\n"; 
     }
-    ss.str(string());
     ss.clear();
   }
   if (!scene_name.empty()) {
-    obj_parser parser(scene_name);
-    vector<primitive *>from_file = parser.parse();
-    primitives.insert(primitives.end(), from_file.begin(), from_file.end());
+   
   }
   scene my_scene(primitives, lights, ambient_l);
   ray_tracer my_ray_tracer(my_camera, my_scene, filename, num_threads, msaa, depth);

@@ -1,8 +1,8 @@
 #include "ray_tracer.h"
-#include "vec4.h"
 #include <algorithm>
 #include <thread>
 #include <math.h>
+#include "vec4.h"
 
 using namespace std;
 
@@ -28,7 +28,9 @@ void ray_tracer::worker(size_t left, size_t top, size_t right, size_t bottom) {
         buffer.set(i, j, color);
       }
     }
-  //rgb color = shade_pixel(400, 400);
+  //rgb color;
+  //for (int i = 400;i < 500; i++) 
+  //color = shade_pixel(700, i);
   //cout << endl << color.x << color.y << color.z << endl;
 }
 
@@ -68,7 +70,6 @@ rgb ray_tracer::trace_ray(const ray &r) {
 }
 
 rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
-
   size_t depth = r.depth; // bounce level
   const vec3 &o = r.o; //origin
   const vec3 &d = r.d; //direction
@@ -86,9 +87,9 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
 		double max_t = 0;
 		rgb I = light->get_ray(poi, &dir_to_light, &max_t);
 		vec3 l = dir_to_light.unit();
-		ray l_ray(poi + 1e-10 * l, l, max_t);
+		ray l_ray(poi, l, max_t);
 
-		if (!box.intersect(l_ray, box.get_root())) {
+		if (!box.intersect(l_ray, box.get_root(), p)) {
 
 			vec3 r = ((-1.0)*l + (2.0*dot(l, n))*n).unit(); //reflected direction normal vector 
 			vec3 v = -d; //view normal vector
@@ -104,11 +105,6 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
 			rgb col = ambient + diffuse + specular;
 			radiance += col;
 		}
-    // cout << poi.x << " " << poi.y << " " << poi.z << "\n";
-    // if ((poi.x > -0.5) && (poi.x < 0.5) && (poi.y > -0.5) && (poi.y< 0.5))
-    // {
-    //     cout << "color: " << radiance.x << " " << radiance.y << " " << radiance.z << "\n";
-    // }
 	}
   return radiance;
 }
@@ -125,11 +121,10 @@ rgb ray_tracer::calc_indrect_light(const ray &r, intersection *i) {
   vec3 l = (-d).unit();
   vec3 poi = o + t*d;
   vec3 out = ((-1.0)*l + (2.0*dot(l, n))*n).unit(); //normalized
-  ray more_r(poi, out, depth-1);
+  ray more_r(poi + 1e-5 * out, out, depth-1);
   rgb color = trace_ray(more_r);
 
   rgb radiance = modmul(color, p->kr);
-
   return radiance;
 }
 

@@ -14,7 +14,7 @@ public:
 
   aabb* recursive_split(const std::vector<primitive*> &primitives, unsigned int max_leaf);
 
-  bool intersect(const ray& r, aabb* node);
+  bool intersect(const ray& r, aabb* node, const primitive *);
 
   bool intersect(const ray& r, aabb* node, intersection *i);
 

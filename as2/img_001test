@@ -1,6 +1,7 @@
 cam 0 0 1 -1 -1 0 1 -1 0 -1 1 0 1 1 0
 mat 0.3 0.3 0.3 0.5 0.5 0.5 0.5 0.5 0.5 1 0 0 0
-sph 0 0 -3 2
 ltp 0 0 1 1 0 0
 
-save img001.png
+obj test.obj
+
+save obj.png

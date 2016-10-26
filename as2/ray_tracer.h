@@ -15,7 +15,7 @@ public:
   ray_tracer(camera &my_camera, scene &sc, string &filename, int num_threads, int msaa, size_t depth)
     : my_camera(std::move(my_camera)), sc(std::move(sc)), box(sc.primitives),
     buffer(my_camera.screen_w, my_camera.screen_h), filename(filename),
-    num_threads(num_threads), msaa(msaa), depth(depth) {}
+    num_threads(num_threads > 1 ? msaa : 1), msaa(msaa > 1 ? msaa : 1), depth(depth) {}
   ~ray_tracer() = default;
 
   void begin();

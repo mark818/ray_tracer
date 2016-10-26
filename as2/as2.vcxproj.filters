@@ -98,9 +98,6 @@
     <ClInclude Include="triangle.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="util.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="bvh.h">
       <Filter>头文件</Filter>
     </ClInclude>

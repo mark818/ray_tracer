@@ -57,23 +57,23 @@ aabb* bvh::recursive_split(const vector<primitive*> &primitives, unsigned int ma
 		node->right = recursive_split(right, max_leaf);
 		return node;
 	}
-
-
 }
 
-bool bvh::intersect(const ray& r, aabb* node) {
+bool bvh::intersect(const ray& r, aabb* node, const primitive *origin) {
 	double min = 0;
 	double max = DBL_MAX;
 	if (node->intersect(r, min, max)) {
 		if (node->is_leaf()) {
 			for (primitive* p: node->primitives) {
+        if (p == origin)
+          continue;
 				if (p->intersect(r)) {
 					return true;
 				}
 			}
 			return false;
 		} else {
-			return intersect(r, node->left) || intersect(r, node->right);
+			return intersect(r, node->left, origin) || intersect(r, node->right, origin);
 		}
 	} else {
 		return false;
@@ -109,4 +109,5 @@ bool bvh::intersect(const ray& r, aabb* node, intersection *i) {
       return true;
     }
   }
+  return false;
 }

@@ -111,6 +111,7 @@
       <CallingConvention>VectorCall</CallingConvention>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -150,7 +151,6 @@
     <ClInclude Include="ray_tracer.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="triangle.h" />
-    <ClInclude Include="util.h" />
     <ClInclude Include="vec3.h" />
     <ClInclude Include="vec4.h" />
   </ItemGroup>
