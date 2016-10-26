@@ -3,6 +3,8 @@
 
 *.png
 *.out
+*.obj
+*.mtl
 
 # User-specific files
 *.suo

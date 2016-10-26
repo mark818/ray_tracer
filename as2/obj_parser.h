@@ -14,7 +14,7 @@ public:
   ~obj_parser() = default;
 
 private:
-  std::array<char *, 4> string_split_4(char buf[], char delim = ' ');
+  void string_split_4(char *buf, std::array<char *, 4> &arr, char delim = ' ');
   bool parse_face(std::array<char *, 4> &line, unsigned int vert[], unsigned int norm[], size_t vert_len, size_t norm_len);
   std::string filename;
 };

@@ -55,18 +55,13 @@ bool ellipsoid::intersect(const ray& r, intersection* i) const {
 }
 
 vec3 ellipsoid::normal(vec3 p) const {
-  vec3 direction;
-  direction.x = cof_sqr.y*cof_sqr.z*(p.x-center.x);
-  direction.y = cof_sqr.x*cof_sqr.z*(p.y-center.y);
-  direction.z = cof_sqr.x*cof_sqr.y*(p.z-center.z);
-  return direction.unit();
+  return (p-center).unit();
 }
 
 bool ellipsoid::test(const ray& r, double& t1, double& t2) const {
-  double denominator = cof_sqr.x + cof_sqr.y + cof_sqr.z;
-  double a = dot(r.d, r.d) / denominator;
-  double b = 2*(r.o.x + r.o.y + r.o.z)/ denominator;
-  double c = dot(r.o, r.o) / denominator - r2;
+  double a = dot(r.d, r.d);
+  double b = 2.0 * dot(r.o - center, r.d);
+  double c = dot(r.o - center, r.o - center) - r2;
   double delta = b * b - 4 * a * c;
   if (delta >= 0) {
     t1 = (-b - sqrt(delta)) / 2 / a;

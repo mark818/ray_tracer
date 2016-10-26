@@ -22,24 +22,27 @@ vector<primitive*> obj_parser::parse() {
   int vt_length = 0;
 
   char buf[100];
+  array<char *, 4> arr;
   while (f.getline(buf, 100)) {
-    if (buf[0] == 0) {
+    if (buf[0] == '#' || buf[0] == 0) {
       continue;
     }
-    array<char *, 4> arr = string_split_4(buf);
-    if (strcmp(arr[0], "v")) {
+    string_split_4(buf, arr);
+    if (strcmp(arr[0], "#") == 0) {
+      continue;
+    } else if (strcmp(arr[0], "v") == 0) {
       double x = atof(arr[1]);
       double y = atof(arr[2]);
       double z = atof(arr[3]);
       vertices.emplace_back(x, y, z);
-    } else if (strcmp(arr[0], "vn")) {
+    } else if (strcmp(arr[0], "vn") == 0) {
       double x = atof(arr[1]);
       double y = atof(arr[2]);
       double z = atof(arr[3]);
       normals.emplace_back(x, y, z);
-    } else if (strcmp(arr[0], "vt")) {
+    } else if (strcmp(arr[0], "vt") == 0) {
       // texture not implemented
-    } else if (strcmp(arr[0], "f")) {
+    } else if (strcmp(arr[0], "f") == 0) {
       unsigned int vert[3], norm[3];
       if (!parse_face(arr, vert, norm, vertices.size(), normals.size())) {
         return vector<primitive*>();
@@ -53,23 +56,31 @@ vector<primitive*> obj_parser::parse() {
   return primitives;
 }
 
-array<char *, 4> obj_parser::string_split_4(char buf[], char delim) {
-  array<char *, 4> arr;
+void obj_parser::string_split_4(char *buf, array<char *, 4> &arr, char delim) {
+  // skip spaces in the front
+  while (*buf == ' ') {
+    buf++;
+  }
   auto iter = arr.begin();
-  arr[0] = buf;
-  iter++;
   bool record = false;
-  for (int i = 0; i < strlen(buf); i++) {
-    if (buf[i] == delim || !record) {
-      record = true;
+  char *last = buf;
+  unsigned int length = strlen(buf);
+  for (int i = 0; i <= length; i++) {
+    if (buf[i] == ' ') {
+      if (!record) {
+        buf[i] = 0;
+        record = true;
+      }
     } else {
       if (record) {
-        *iter = buf + i;
         record = false;
+        *iter++ = last;
+        last = buf + i;
+      } else if (buf[i] == 0) {
+        *iter = last;
       }
     }
   }
-  return arr;
 }
 
 bool obj_parser::parse_face(std::array<char*, 4>& line, unsigned int vert[], unsigned int norm[], size_t vert_len, size_t norm_len) {

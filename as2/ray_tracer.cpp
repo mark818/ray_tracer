@@ -28,7 +28,7 @@ void ray_tracer::worker(size_t left, size_t top, size_t right, size_t bottom) {
         buffer.set(i, j, color);
       }
     }
-  //rgb color = shade_pixel(300, 600);
+  //rgb color = shade_pixel(400, 400);
   //cout << endl << color.x << color.y << color.z << endl;
 }
 
@@ -78,7 +78,6 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
   vec3 &n = i->n; // normalized
   // printf("t: %f  n: %f %f %f\n", t, n.x, n.y, n.z);
 	vec3 poi = o + t*d;
-	poi = poi.unit();
 
 	rgb radiance(0, 0, 0);
 	for (auto light : sc.lights) {
