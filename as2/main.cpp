@@ -178,16 +178,17 @@ int __cdecl main(int argc, char *argv[]) {
     } else if (word == "xfr") {
       array<double, 3> arr = readline<3>(ss, &fail);
       if (!fail) {
+        vec3 r_n = vec3(arr[0], arr[1], arr[2]).unit();
         double theta = sqrt(sqr(arr[0]) + sqr(arr[1]) + sqr(arr[2])) / 180 * PI;
         double sin_theta = sin(theta);
         double cos_theta = cos(theta);
-        double data[] = { 0, -arr[2], arr[1],
-                         arr[2], 0, -arr[0],
-                         -arr[1], arr[0], 0 };
+        double data[] = { 0, -r_n.z, r_n.y,
+                         r_n.z, 0, -r_n.x,
+                         -r_n.y, r_n.x, 0 };
         matrix3x3 Rx = matrix3x3(data);
-        double r_data[] = { arr[0] * arr[0], arr[0] * arr[1], arr[0] * arr[2],
-                           arr[1] * arr[0], arr[1] * arr[1], arr[2] * arr[2],
-                           arr[2] * arr[0], arr[2] * arr[1], arr[2] * arr[2] };
+        double r_data[] = { r_n.x * r_n.x, r_n.x * r_n.y, r_n.x * r_n.z,
+                           r_n.y * r_n.x, r_n.y * r_n.y, r_n.z * r_n.z,
+                           r_n.z * r_n.x, r_n.z * r_n.y, r_n.z * r_n.z };
         matrix3x3 rr = matrix3x3(r_data);
         matrix3x3 m = rr + sin_theta * Rx - cos_theta * Rx * Rx;
         matrix4x4 m4 = extend_to_matrix4x4(m);
