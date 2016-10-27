@@ -187,7 +187,7 @@ int __cdecl main(int argc, char *argv[]) {
                          -r_n.y, r_n.x, 0 };
         matrix3x3 Rx = matrix3x3(data);
         double r_data[] = { r_n.x * r_n.x, r_n.x * r_n.y, r_n.x * r_n.z,
-                           r_n.y * r_n.x, r_n.y * r_n.y, r_n.z * r_n.z,
+                           r_n.y * r_n.x, r_n.y * r_n.y, r_n.y * r_n.z,
                            r_n.z * r_n.x, r_n.z * r_n.y, r_n.z * r_n.z };
         matrix3x3 rr = matrix3x3(r_data);
         matrix3x3 m = rr + sin_theta * Rx - cos_theta * Rx * Rx;

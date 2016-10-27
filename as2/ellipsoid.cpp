@@ -111,8 +111,8 @@ vec3 ellipsoid::normal(vec3 p) const {
 
 bool ellipsoid::test(const ray& r, double& t1, double& t2) const {
   double a = dot(r.d, r.d);
-  double b = 2.0 * dot(r.o - centroid, r.d);
-  double c = dot(r.o - centroid, r.o - centroid) - r2;
+  double b = 2.0 * dot(r.o - center, r.d);
+  double c = dot(r.o - center, r.o - center) - r2;
   double delta = b * b - 4 * a * c;
   if (delta >= 0) {
     t1 = (-b - sqrt(delta)) / 2 / a;

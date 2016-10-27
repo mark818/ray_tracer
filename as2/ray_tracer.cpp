@@ -53,7 +53,7 @@ void ray_tracer::worker(size_t left, size_t top, size_t right, size_t bottom) {
         buffer.set(i, j, color);
       }
     }
-  //rgb color = shade_pixel(400, 400);
+  //rgb color = shade_pixel(250, 0);
   //cout << endl << color.x << color.y << color.z << endl;
 }
 
