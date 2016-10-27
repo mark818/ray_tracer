@@ -1,4 +1,10 @@
 #include "ellipsoid.h"
+using namespace std;
+
+aabb ellipsoid::get_aabb() const {
+    vec3 centroid = trim_to_vec3(m * vec4(center.x, center.y, center.z, 1));
+    return aabb(centroid - vec3(long_sa, long_sa, long_sa), centroid + vec3(long_sa, long_sa, long_sa));
+  }
 
 bool ellipsoid::intersect(const ray &r) const {
   double t1, t2, max;
