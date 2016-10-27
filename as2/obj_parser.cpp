@@ -4,9 +4,12 @@
 #include <sstream>
 #include <string.h>
 #include <cmath>
-#include <cctype>
 #include <algorithm>
 using namespace std;
+
+inline bool is_space(char c) {
+  return c == ' ';
+}
 
 vector<primitive*> obj_parser::parse() {
   ifstream f(filename);
@@ -23,7 +26,7 @@ vector<primitive*> obj_parser::parse() {
   
   while (getline(f, buf)) {
     // skip spaces in the front
-    string line(find_if_not(buf.begin(), buf.end(), isspace), buf.end());
+    string line(find_if_not(buf.begin(), buf.end(), is_space), buf.end());
     if (line.length() == 0) continue;
     if (line[0] == 'v') {
       double x, y, z;
