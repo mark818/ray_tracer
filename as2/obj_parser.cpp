@@ -95,7 +95,7 @@ bool obj_parser::parse_face_index(const char *line, vector<unsigned int> &indice
   } else {
     sscanf(line, "%ud%ud%ud", &vertex, &texture, &normal); // texture not implemented
   }
-  if (vertex > vertices.size() || length > 1 && normal > normals.size()) {
+  if ((vertex > vertices.size()) || (length > 1 && normal > normals.size())) {
     cerr << "Obj file f index out of bound.\n";
     return false;
   }

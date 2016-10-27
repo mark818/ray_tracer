@@ -2,12 +2,13 @@
 #define ELLIPSOID
 #include "scene.h"
 #include "vec4.h"
+#include "matrix4x4.h"
 
 class ellipsoid : public primitive {
 public:
 
-  ellipsoid(vec3& center, vec3& ellipsoid_cof, double r, vec3 ka, vec3 kd, vec4 ks, vec3 kr)
-    : primitive(ka, kd, ks, kr), center(center), r(r), r2(r*r) {}
+  ellipsoid(vec3& center, double r, vec3 ka, vec3 kd, vec4 ks, vec3 kr, matrix4x4 inv_m)
+    : primitive(ka, kd, ks, kr), center(center), r(r), r2(r*r), inv_m(inv_m) {}
 
   aabb get_aabb() const override {
     return aabb(center - vec3(r, r, r), center + vec3(r, r, r));
@@ -26,6 +27,7 @@ private:
   vec3 center; // origin of the sphere
   double r;   // radius
   double r2;  // radius squared
+  matrix4x4 inv_m; // inverse matrix of the applied transformation matrix
 
 };
 

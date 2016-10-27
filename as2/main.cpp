@@ -112,10 +112,10 @@ int __cdecl main(int argc, char *argv[]) {
       array<double, 4> arr = readline<4>(ss, &fail);
       if (!fail) {      
         vec3 center(arr[0], arr[1], arr[2]);
-        vec3 ellipsoid_cof((double)1, (double)1, (double)1);
         double r = arr[3];
         // do transformation
-        primitives.push_back(new ellipsoid(center, ellipsoid_cof, r, ka, kd, ks, kr));
+        matrix4x4 inv_m = cur_matrix.inv();
+        primitives.push_back(new ellipsoid(center, r, ka, kd, ks, kr, inv_m));
       }
     } else if (word == "tri") {
       array<double, 9> arr = readline<9>(ss, &fail);
