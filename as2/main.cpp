@@ -120,9 +120,9 @@ int __cdecl main(int argc, char *argv[]) {
     } else if (word == "tri") {
       array<double, 9> arr = readline<9>(ss, &fail);
       if (!fail) {
-        vec4 v1(arr[0], arr[1], arr[2], 0);
-        vec4 v2(arr[3], arr[4], arr[5], 0);
-        vec4 v3(arr[6], arr[7], arr[8], 0);
+        vec4 v1(arr[0], arr[1], arr[2], 1);
+        vec4 v2(arr[3], arr[4], arr[5], 1);
+        vec4 v3(arr[6], arr[7], arr[8], 1);
         vec3 A = trim_to_vec3(cur_matrix*v1);
         vec3 B = trim_to_vec3(cur_matrix*v2);
         vec3 C = trim_to_vec3(cur_matrix*v3);

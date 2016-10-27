@@ -2,9 +2,8 @@
 using namespace std;
 
 aabb ellipsoid::get_aabb() const {
-    vec3 centroid = trim_to_vec3(m * vec4(center.x, center.y, center.z, 1));
-    return aabb(centroid - vec3(long_sa, long_sa, long_sa), centroid + vec3(long_sa, long_sa, long_sa));
-  }
+  return aabb(centroid - vec3(long_sa, long_sa, long_sa), centroid + vec3(long_sa, long_sa, long_sa));
+}
 
 bool ellipsoid::intersect(const ray &r) const {
   double t1, t2, max;
@@ -18,8 +17,10 @@ bool ellipsoid::intersect(const ray &r) const {
     inv_d = (end_vec3 - inv_o).unit();
     max = (end_vec3 - inv_o).x/inv_d.x;
   } else {
-    vec4 d_vec4 = inv_m * vec4(r.d.x, r.d.y, r.d.z, 1); 
-    inv_d = trim_to_vec3(d_vec4/d_vec4.w).unit();
+    vec3 end = r.o + r.d;
+    vec4 end_vec4 = inv_m * vec4(end.x, end.y, end.z, 1);
+    vec3 end_vec3 = trim_to_vec3(end_vec4 / end_vec4.w);
+    inv_d = (end_vec3 - inv_o).unit();
     max = r.max;
   }
   ray inv_r = ray(inv_o, inv_d, max, r.depth);
@@ -56,8 +57,10 @@ bool ellipsoid::intersect(const ray& r, intersection* i) const {
     inv_d = (end_vec3 - inv_o).unit();
     max = (end_vec3 - inv_o).x/inv_d.x;
   } else {
-    vec4 d_vec4 = inv_m * vec4(r.d.x, r.d.y, r.d.z, 1); 
-    inv_d = trim_to_vec3(d_vec4/d_vec4.w).unit();
+    vec3 end = r.o + r.d;
+    vec4 end_vec4 = inv_m * vec4(end.x, end.y, end.z, 1);
+    vec3 end_vec3 = trim_to_vec3(end_vec4 / end_vec4.w);
+    inv_d = (end_vec3 - inv_o).unit();
     max = r.max;
   }
   ray inv_r = ray(inv_o, inv_d, max, r.depth);
@@ -108,8 +111,8 @@ vec3 ellipsoid::normal(vec3 p) const {
 
 bool ellipsoid::test(const ray& r, double& t1, double& t2) const {
   double a = dot(r.d, r.d);
-  double b = 2.0 * dot(r.o - center, r.d);
-  double c = dot(r.o - center, r.o - center) - r2;
+  double b = 2.0 * dot(r.o - centroid, r.d);
+  double c = dot(r.o - centroid, r.o - centroid) - r2;
   double delta = b * b - 4 * a * c;
   if (delta >= 0) {
     t1 = (-b - sqrt(delta)) / 2 / a;
