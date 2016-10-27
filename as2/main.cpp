@@ -115,7 +115,7 @@ int __cdecl main(int argc, char *argv[]) {
         double r = arr[3];
         // do transformation
         matrix4x4 inv_m = cur_matrix.inv();
-        primitives.push_back(new ellipsoid(center, r, ka, kd, ks, kr, inv_m));
+        primitives.push_back(new ellipsoid(center, r, ka, kd, ks, kr, cur_matrix, inv_m));
       }
     } else if (word == "tri") {
       array<double, 9> arr = readline<9>(ss, &fail);
