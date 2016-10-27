@@ -1,6 +1,6 @@
 #include "matrix4x4.h"
 
-#include <math.h>
+#include <cmath>
 
 // first entry is the first column
 double& matrix4x4::operator()(int i, int j) {

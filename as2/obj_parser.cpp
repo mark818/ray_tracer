@@ -3,7 +3,8 @@
 #include <iostream>
 #include <sstream>
 #include <string.h>
-#include <math.h>
+#include <cmath>
+#include <cctype>
 #include <algorithm>
 using namespace std;
 
@@ -41,6 +42,7 @@ vector<primitive*> obj_parser::parse() {
       }
     }
   }
+  f.close();
   return primitives;
 }
 

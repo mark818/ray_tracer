@@ -1,9 +1,17 @@
 #include <vector>
 #include <algorithm>
+#include <ctime>
 #include "bvh.h"
 #include "vec3.h"
 #include "scene.h"
 using namespace std;
+
+bvh::bvh(const std::vector<primitive*>& primitives) {
+  clock_t time = clock();
+  root = recursive_split(primitives, 1);
+  time = clock() - time;
+  cout << "Time taken to construct BVH of " << primitives.size() << " primitives: " << time << "ms\n";
+}
 
 aabb* bvh::get_root() {
 	return root;

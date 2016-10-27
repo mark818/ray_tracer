@@ -78,5 +78,8 @@ inline vec3 trim_to_vec3(const vec4& v) {
 		return vec3(v.x, v.y, v.z);
 }
 
+inline vec4 expand_to_vec4(const vec3& v) {
+  return vec4(v.x, v.y, v.z, 1);
+}
 #endif
 

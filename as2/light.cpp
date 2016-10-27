@@ -1,6 +1,6 @@
 #include "light.h"
 #include "float.h"
-#include "math.h"
+#include "cmath"
 
 
 rgb directional_light::get_ray(vec3& p, vec3* dir_to_light, double* max_t) const {

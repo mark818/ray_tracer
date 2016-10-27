@@ -1,6 +1,6 @@
 #ifndef RAY
 #define RAY
-#include <math.h>
+#include <cmath>
 #include "vec3.h"
 #include "float.h"
 

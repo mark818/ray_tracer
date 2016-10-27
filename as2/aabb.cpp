@@ -1,6 +1,6 @@
 #include "aabb.h"
 #include <algorithm>
-#include <math.h>
+#include <cmath>
 
 void aabb::expand(const aabb& box) {
   min.x = std::min(min.x, box.min.x);

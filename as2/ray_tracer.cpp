@@ -1,12 +1,37 @@
-#include "ray_tracer.h"
 #include <algorithm>
 #include <thread>
-#include <math.h>
+#include <cmath>
+#include <time.h>
+#include <iostream>
+#include "ray_tracer.h"
 #include "vec4.h"
 
 using namespace std;
 
 void ray_tracer::begin() {
+  if (my_camera.has_dof()) {
+    unsigned int counter = 0;
+    double v_step = 0.02;
+    double h_step = 0.02;
+    for (double ver = -my_camera.aperture_h / 2; ver <= my_camera.aperture_h / 2; ver += v_step) {
+      for (double hor = -my_camera.aperture_w / 2; hor <= my_camera.aperture_w / 2; hor += h_step) {
+        my_camera.rotate_right(hor);
+        my_camera.rotate_down(ver);
+        dispatch();
+        counter++;
+      }
+    }
+    buffer.write_to_png(filename.c_str());
+  } else {
+    clock_t time = clock();
+    dispatch();
+    time = clock() - time;
+    cout << "Time taken to render with " << num_threads << " threads: " << time << "ms\n";
+    buffer.write_to_png(filename.c_str());
+  }
+}
+
+void ray_tracer::dispatch() {
   vector<thread> threads;
   threads.reserve(num_threads);
   size_t height_per_tile = static_cast<int>(my_camera.screen_h / num_threads);
@@ -18,13 +43,13 @@ void ray_tracer::begin() {
   for (int i = 0; i < num_threads; i++) {
     threads[i].join();
   }
-  buffer.write_to_png(filename.c_str());
 }
 
 void ray_tracer::worker(size_t left, size_t top, size_t right, size_t bottom) {
     for (size_t j = top; j < bottom; j++) {
       for (size_t i = left; i < right; i++) {
         rgb color = shade_pixel(i, j);
+        const vec3 v;
         buffer.set(i, j, color);
       }
     }

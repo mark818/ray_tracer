@@ -6,9 +6,8 @@
 class bvh {
 public:
 
-  bvh(const std::vector<primitive*> &primitives) {
-    root = recursive_split(primitives, 1);
-  }
+  bvh(const std::vector<primitive*> &primitives);
+ 
 
   aabb* get_root();
 

@@ -245,8 +245,13 @@ int __cdecl main(int argc, char *argv[]) {
           cerr << "Extra paramters.\n";
         }
       }
+    } else if (word == "dof") { // target.x target.y target.z aperture.w aperture.h
+      array<double, 5> arr = readline<5>(ss, &fail);
+      if (!fail) {
+        my_camera.set_dof(vec3(arr[0], arr[1], arr[2]), arr[3], arr[4]);
+      }
     } else {
-      cerr << "Unsupported feature.\n"; 
+      cerr << "Invalid dof arguments.\n"; 
     }
     ss.clear();
   }
@@ -256,4 +261,5 @@ int __cdecl main(int argc, char *argv[]) {
   scene my_scene(primitives, lights, ambient_l);
   ray_tracer my_ray_tracer(my_camera, my_scene, filename, num_threads, msaa, depth);
   my_ray_tracer.begin();
+  return 0;
 }
