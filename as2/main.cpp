@@ -262,5 +262,9 @@ int __cdecl main(int argc, char *argv[]) {
   scene my_scene(primitives, lights, ambient_l);
   ray_tracer my_ray_tracer(my_camera, my_scene, filename, num_threads, msaa, depth);
   my_ray_tracer.begin();
+  int a;
+  string str;
+  cin >> str;
+  cin >> str;
   return 0;
 }
