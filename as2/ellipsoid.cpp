@@ -74,7 +74,7 @@ bool ellipsoid::intersect(const ray& r, intersection* i) const {
           double true_t1 = (t_poi3 - r.o).norm();
           i->t = true_t1;
           i->p = this;
-          i->n = normal(t_poi3);
+          i->n = normal(poi);
           return true;
         } else {
           return false;
@@ -87,7 +87,7 @@ bool ellipsoid::intersect(const ray& r, intersection* i) const {
           double true_t2 = (t_poi3 - r.o).norm();
           i->t = true_t2;
           i->p = this;
-          i->n = normal(t_poi3);
+          i->n = normal(poi);
           return true;
         } else {
           return false;
@@ -104,7 +104,7 @@ bool ellipsoid::intersect(const ray& r, intersection* i) const {
 vec3 ellipsoid::normal(vec3 p) const {
   vec3 ori_n = p - center;
   // transformed normal is the M^-T * original normal
-  vec4 new_n4 = inv_m * vec4(ori_n.x, ori_n.y, ori_n.z, 1);
+  vec4 new_n4 = inv_m.T() * vec4(ori_n.x, ori_n.y, ori_n.z, 1);
   vec3 new_n3 = trim_to_vec3(new_n4/new_n4.w).unit();
   return new_n3;
 }
