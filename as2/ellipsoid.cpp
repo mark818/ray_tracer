@@ -71,7 +71,13 @@ bool ellipsoid::intersect(const ray& r, intersection* i) const {
           vec3 poi = inv_r.o + t1 * inv_r.d;
           vec4 t_poi4 = m * vec4(poi.x, poi.y, poi.z, 1);
           vec3 t_poi3 = trim_to_vec3(t_poi4/t_poi4.w);
-          double true_t1 = (t_poi3 - r.o).x/r.d.x;
+          double true_t1;
+          for (int i = 0; i < 3; i++) {
+            if (r.d[i] != 0) {
+              true_t1 = (t_poi3 - r.o)[i] / r.d[i];
+              break;
+            }
+          }
           i->t = true_t1;
           i->p = this;
           i->n = normal(t_poi3);
@@ -84,7 +90,13 @@ bool ellipsoid::intersect(const ray& r, intersection* i) const {
           vec3 poi = inv_r.o + t2 * inv_r.d;
           vec4 t_poi4 = m * vec4(poi.x, poi.y, poi.z, 1);
           vec3 t_poi3 = trim_to_vec3(t_poi4/t_poi4.w);
-          double true_t2 = (t_poi3 - r.o).x/r.d.x;
+          double true_t2;
+          for (int i = 0; i < 3; i++) {
+            if (r.d[i] != 0) {
+              true_t2 = (t_poi3 - r.o)[i] / r.d[i];
+              break;
+            }
+          }
           i->t = true_t2;
           i->p = this;
           i->n = normal(t_poi3);
@@ -104,7 +116,7 @@ bool ellipsoid::intersect(const ray& r, intersection* i) const {
 vec3 ellipsoid::normal(vec3 p) const {
   vec3 ori_n = p - center;
   // transformed normal is the M^-T * original normal
-  vec4 new_n4 = inv_m.T() * vec4(ori_n.x, ori_n.y, ori_n.z, 1);
+  vec4 new_n4 = inv_m * vec4(ori_n.x, ori_n.y, ori_n.z, 1);
   vec3 new_n3 = trim_to_vec3(new_n4/new_n4.w).unit();
   return new_n3;
 }

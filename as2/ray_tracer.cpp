@@ -53,7 +53,7 @@ void ray_tracer::worker(size_t left, size_t top, size_t right, size_t bottom) {
         buffer.set(i, j, color);
       }
     }
-  //rgb color = shade_pixel(250, 0);
+  //rgb color = shade_pixel(400, 550);
   //cout << endl << color.x << color.y << color.z << endl;
 }
 
@@ -108,11 +108,11 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
 
 		vec3 dir_to_light;
 		double max_t = 0;
-		rgb I = light->get_ray(poi, &dir_to_light, &max_t);
+		rgb I = light->get_ray(poi + 0.01 * n, &dir_to_light, &max_t);
 		vec3 l = dir_to_light.unit();
-		ray l_ray(poi, l, max_t);
+		ray l_ray(poi + 0.01 * n, l, max_t);
 
-		if (!box.intersect(l_ray, box.get_root(), p)) {
+		if (!box.intersect(l_ray, box.get_root())) {
 
 			vec3 r = ((-1.0)*l + (2.0*dot(l, n))*n).unit(); //reflected direction normal vector 
 			vec3 v = -d; //view normal vector
