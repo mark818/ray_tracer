@@ -20,10 +20,6 @@ main:
 
 color rgb use 1 then convert to 255 when save
 
-bounce
-ellipsoid?
-refraction??
-load obj later
 
 Argument NOTE
 1. msaa need to be perfect square
@@ -35,3 +31,12 @@ blank as extra argument
 
 todo: 
 change max_leaf
+
+EXTRA CREDIT：
+• Use some reasonable method for accelerating ray tests -- AABB & BVH
+
+• Anti-aliasing
+
+• depth of field
+
+• Other interesting features -- Multiple threads running for speed
