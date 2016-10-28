@@ -3,9 +3,9 @@
 
 camera::camera(const vec3 &eye, const vec3 &ll, const vec3 &lr, const vec3 &ul, const vec3 &ur) 
   :eye(eye), ll(ll), lr(lr), ul(ul), ur(ur) {
-    double ar = (lr-ll).norm()/(ul-ll).norm();
-    screen_w = static_cast<unsigned int>(ar > 1 ? 800 * ar : 800);
-    screen_h = static_cast<unsigned int>((ar > 1)? 800:800*ar);
+    ar = (lr-ll).norm()/(ul-ll).norm();
+    screen_w = static_cast<unsigned int>(ar > 1 ? 1000 * ar : 1000);
+    screen_h = static_cast<unsigned int>((ar > 1)? 1000:1000*ar);
   }
 
 void camera::set_dof(const vec3 &target, double width, double height) {

@@ -213,6 +213,23 @@ int __cdecl main(int argc, char *argv[]) {
           cerr << "Extra paramters.\n";
         }
       }
+    } else if (word == "size") {
+      if (!ss.eof()) {
+        double size;
+        ss >> size;
+        if (size < 700) {
+          cerr << "Size too small to render.\n"; 
+        } else if (size > 3000) {
+          cerr << "Size too large to render.\n"; 
+        } else{
+          double ar = my_camera.ar;
+          my_camera.screen_w = static_cast<unsigned int>(ar > 1 ? size * ar : size);
+          my_camera.screen_h = static_cast<unsigned int>((ar > 1)? size:size*ar);
+        }
+        if (!ss.eof()) {
+          cerr << "Extra paramters.\n";
+        }
+      }
     } else if (word == "d") {
       if (!ss.eof()) {
         ss >> depth;

@@ -23,6 +23,7 @@ public:
 
   unsigned int screen_w, screen_h;
   double aperture_w, aperture_h;
+  double ar; //aspect ratio
 
 private:
   
