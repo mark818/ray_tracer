@@ -70,7 +70,7 @@ rgb ray_tracer::shade_pixel(size_t x, size_t y) {
     }
   }
   // if (color.z > 0) { 
-  printf("get pixel's color: %zu %zu: %f %f %f\n", x, y, color.x, color.y, color.z);
+  // printf("get pixel's color: %zu %zu: %f %f %f\n", x, y, color.x, color.y, color.z);
   // }
   return (color/msaa);
 }

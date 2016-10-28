@@ -46,6 +46,7 @@ vector<primitive*> obj_parser::parse() {
     }
   }
   f.close();
+  cout << "Reading obj complete, created " << primitives.size() << " primitives.\n";
   return primitives;
 }
 
@@ -69,13 +70,13 @@ bool obj_parser::parse_face(string &&line) {
     }
   }
   if (length == 3) {
-    for (int i = 1; i < indices.size() - 1; i++) {
-      primitives.push_back(new triangle(vertices[0], vertices[i], vertices[i + 1],
-                                                            normals[0], normals[i], normals[i + 1], ka, kd, ks, kr));
+    for (int i = 0; i < indices.size() - 5; i += 6) {
+      primitives.push_back(new triangle(vertices[indices[i]], vertices[indices[i+2]], vertices[indices[i+4]],
+                                                            normals[indices[i+1]], normals[indices[i+3]], normals[i + 5], ka, kd, ks, kr));
     }
   } else {
-    for (int i = 1; i < indices.size() - 1; i++) {
-      primitives.push_back(new triangle(vertices[0], vertices[i], vertices[i + 1], ka, kd, ks, kr));
+    for (int i = 0; i < indices.size() - 2; i += 3) {
+      primitives.push_back(new triangle(vertices[indices[i]], vertices[indices[i+1]], vertices[indices[i+2]], ka, kd, ks, kr));
     }
   }
   return true;

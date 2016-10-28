@@ -22,7 +22,6 @@ aabb* bvh::recursive_split(const vector<primitive*> &primitives, unsigned int ma
 	aabb box;
 	aabb centroid_box;
 
-
 	for (primitive* p: primitives) {
 		aabb b = p->get_aabb();
 		box.expand(b);
