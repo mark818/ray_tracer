@@ -119,8 +119,13 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
 
 			double sp = (p->ks).w;
 			vec3 ks_vec3 = trim_to_vec3(p->ks);
-
-			rgb ambient = modmul(p->ka, (I + sc.ambient_l));
+      rgb ambient;
+      if (sc.ambient_l.norm() > 0) {
+        ambient = modmul(p->ka, sc.ambient_l);
+      } else {
+        ambient = modmul(p->ka, I);
+      }
+			
       rgb inter = modmul(p->kd, I);
       // printf("%f %f %f\n", p->kd.x, p->kd.y, p->kd.z);
 			rgb diffuse = max(dot(l, n), 0.0)*modmul(p->kd, I);

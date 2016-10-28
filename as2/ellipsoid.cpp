@@ -55,7 +55,7 @@ bool ellipsoid::intersect(const ray& r, intersection* i) const {
     vec4 end_vec4 = inv_m * vec4(end.x, end.y, end.z, 1);
     vec3 end_vec3 = trim_to_vec3(end_vec4/end_vec4.w);
     inv_d = (end_vec3 - inv_o).unit();
-    max = (end_vec3 - inv_o).x/inv_d.x;
+    max = (end_vec3 - inv_o).norm();
   } else {
     vec3 end = r.o + r.d;
     vec4 end_vec4 = inv_m * vec4(end.x, end.y, end.z, 1);
