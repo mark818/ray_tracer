@@ -37,7 +37,7 @@ public:
  */
  class light {
  public:
-   virtual rgb get_ray(vec3& p, vec3* wi, double* max_t) const = 0;
+   virtual rgb get_ray(const vec3& p, vec3* wi, double* max_t) const = 0;
 
  };
 
