@@ -28,3 +28,7 @@ load obj later
 Argument NOTE
 1. msaa need to be perfect square
 2. first mat then triangle
+
+main.cpp:
+
+blank as extra argument
