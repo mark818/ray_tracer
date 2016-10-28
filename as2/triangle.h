@@ -11,8 +11,10 @@ public:
 
   triangle(const vec3 &A, const vec3 &B, const vec3 &C,
     const vec3 &ka, const vec3 &kd, vec4 &ks, const vec3 &kr)
-    : primitive(ka, kd, ks, kr), v1(A), v2(B), v3(C), v1v2(v2 - v1), v1v3(v3 - v1) {
+    : primitive(ka, kd, ks, kr), v1(A), v2(B), v3(C), v1v2(v2 - v1), v1v3(v3 - v1), box(v1) {
     normal = n1 = n2 = n3 = cross(v1v2, v1v3).unit();
+    box.expand(v2);
+    box.expand(v3);
   }
 
   triangle(const vec3 &A, const vec3 &B, const vec3 &C,
@@ -23,9 +25,6 @@ public:
   }
 
   aabb get_aabb() const override {
-    aabb box(v1);
-    box.expand(v2);
-    box.expand(v3);
     return box;
   }
 
@@ -39,5 +38,6 @@ private:
   vec3 v1v2, v1v3;
   vec3 n1, n2, n3;
   vec3 normal;
+  aabb box;
 };
 #endif

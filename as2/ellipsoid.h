@@ -14,6 +14,7 @@ public:
       long_sa = r * std::max(std::max(m(0, 0), m(1, 1)), m(2, 2));
       vec4 center4 = m * vec4(center.x, center.y, center.z, 1);
       centroid = trim_to_vec3(center4 / center4.w);
+      box = aabb(centroid - vec3(long_sa, long_sa, long_sa), centroid + vec3(long_sa, long_sa, long_sa));
     }
 
   aabb get_aabb() const override;
@@ -35,6 +36,7 @@ private:
   matrix4x4 m;  // applied transformation matrix
   matrix4x4 inv_m; // inverse matrix of the applied transformation matrix
   double long_sa;
+  aabb box;
 };
 
 #endif

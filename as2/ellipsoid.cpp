@@ -2,7 +2,7 @@
 using namespace std;
 
 aabb ellipsoid::get_aabb() const {
-  return aabb(centroid - vec3(long_sa, long_sa, long_sa), centroid + vec3(long_sa, long_sa, long_sa));
+  return box;
 }
 
 bool ellipsoid::intersect(const ray &r) const {

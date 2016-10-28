@@ -8,7 +8,7 @@ using namespace std;
 
 bvh::bvh(const std::vector<primitive*>& primitives) {
   clock_t time = clock();
-  root = recursive_split(primitives, 1);
+  root = recursive_split(primitives, 4);
   time = clock() - time;
   cout << "Time taken to construct BVH of " << primitives.size() << " primitives: " << time << "ms\n";
 }

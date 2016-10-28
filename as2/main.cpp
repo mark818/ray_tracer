@@ -178,6 +178,32 @@ int __cdecl main(int argc, char *argv[]) {
     } else if (word == "xfr") {
       array<double, 3> arr = readline<3>(ss, &fail);
       if (!fail) {
+        // for (int i = 0; i < 3; ++i) {
+        //   if (arr[i] != 0) {
+        //     double theta = arr[i] / 180 * PI;
+        //     double sin_theta = sin(theta);
+        //     double cos_theta = cos(theta);
+        //     matrix3x3 m;
+        //     if (i == 0) {
+        //       double data[] = { 1, 0, 0,
+        //                         0, cos_theta, -sin_theta,
+        //                         0, sin_theta, cos_theta }; 
+        //       m = matrix3x3(data);
+        //     } else if (i == 1) {
+        //       double data[] = { cos_theta, 0, sin_theta,
+        //                         0, 1, 0,
+        //                         -sin_theta, 0, cos_theta};
+        //       m = matrix3x3(data);
+        //     } else {
+        //       double data[] = { cos_theta, -sin_theta, 0,
+        //                         sin_theta, cos_theta, 0,
+        //                         0, 0, 1};  
+        //       m = matrix3x3(data);            
+        //     }
+        //     matrix4x4 m4 = extend_to_matrix4x4(m);
+        //     cur_matrix = m4 * cur_matrix;
+        //   }
+        // }
         vec3 r_n = vec3(arr[0], arr[1], arr[2]).unit();
         double theta = sqrt(sqr(arr[0]) + sqr(arr[1]) + sqr(arr[2])) / 180 * PI;
         double sin_theta = sin(theta);
