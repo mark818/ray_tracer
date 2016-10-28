@@ -92,12 +92,18 @@ bool bvh::intersect(const ray& r, aabb* node, intersection *i) {
   double max = DBL_MAX;
   if (node->intersect(r, min, max)) {
     if (node->is_leaf()) {
+      intersection temp;
+      temp.t = DBL_MAX;
+      double min_t = DBL_MAX;
       for (primitive* p : node->primitives) {
-        if (p->intersect(r, i)) {
-          return true;
+        if (p->intersect(r, &temp)) {
+          if (temp.t < min_t) {
+            min_t = temp.t;
+            *i = temp;
+          }
         }
       }
-      return false;
+      return min_t < DBL_MAX;
     } else {
       intersection i1, i2;
       bool r1 = intersect(r, node->left, &i1);
