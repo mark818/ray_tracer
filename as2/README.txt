@@ -24,6 +24,7 @@ color rgb use 1 then convert to 255 when save
 Argument NOTE
 1. msaa need to be perfect square
 2. first mat then triangle
+3. area light input, the last argument needs to be perfect square
 
 main.cpp:
 

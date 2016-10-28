@@ -160,6 +160,33 @@ int __cdecl main(int argc, char *argv[]) {
       if (!fail) {
         ambient_l = rgb(arr[0], arr[1], arr[2]);
       }
+    } else if (word == "ltar") {
+      int falloff;
+      array<double, 16> arr = readline<16>(ss, &falloff, &fail);
+      if (!fail) {
+        vec3 ll = vec3(arr[0], arr[1], arr[2]);
+        vec3 lr = vec3(arr[3], arr[4], arr[5]);
+        vec3 ul = vec3(arr[6], arr[7], arr[8]);
+        vec3 ur = vec3(arr[9], arr[10], arr[11]);
+        vec3 rad = vec3(arr[12], arr[13], arr[14]);
+        int size_ltp = (int)sqrt(arr[15])-1;
+        if (size_ltp < 0) {
+          cerr << "Invalid ltar argument.\n"; 
+        } else if (size_ltp == 0) {
+          cerr << "No need to do area light, please use point light then.\n"; 
+          vec3 light_pos = 0.5*(0.5*ll + 0.5*ul) + 0.5*(0.5*lr + 0.5*ur);
+          lights.push_back(new point_light(rad, light_pos, falloff));          
+        } else {
+          for (int i = 0; i < (size_ltp+1); ++i) {
+            double u = i/size_ltp;
+            for (int j = 0; j < (size_ltp+1); ++j) {
+              double v = j/size_ltp;
+              vec3 light_pos = (1-u)*((1-v)*ll + v*ul) + u*((1-v)*lr + v*ur);
+              lights.push_back(new point_light(rad, light_pos, falloff));
+            }
+          }
+        }
+      }
     } else if (word == "mat") {
       array<double, 13> arr = readline<13>(ss, &fail);
       if (!fail) {
