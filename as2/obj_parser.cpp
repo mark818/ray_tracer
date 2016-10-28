@@ -71,12 +71,20 @@ bool obj_parser::parse_face(string &&line) {
   }
   if (length == 3) {
     for (int i = 0; i < indices.size() - 5; i += 6) {
-      primitives.push_back(new triangle(vertices[indices[i]], vertices[indices[i+2]], vertices[indices[i+4]],
-                                                            normals[indices[i+1]], normals[indices[i+3]], normals[i + 5], ka, kd, ks, kr));
+      vec3 A = trim_to_vec3(trans * expand_to_vec4(vertices[indices[i]]));
+      vec3 B = trim_to_vec3(trans * expand_to_vec4(vertices[indices[i+2]]));
+      vec3 C = trim_to_vec3(trans * expand_to_vec4(vertices[indices[i+4]]));
+      vec3 n1 = trim_to_vec3(trans * expand_to_vec4(vertices[indices[i+1]])).unit();
+      vec3 n2 = trim_to_vec3(trans * expand_to_vec4(vertices[indices[i+3]])).unit();
+      vec3 n3 = trim_to_vec3(trans * expand_to_vec4(vertices[indices[i+5]])).unit();
+      primitives.push_back(new triangle(A, B, C, n1, n2, n3, ka, kd, ks, kr));
     }
   } else {
     for (int i = 0; i < indices.size() - 2; i += 3) {
-      primitives.push_back(new triangle(vertices[indices[i]], vertices[indices[i+1]], vertices[indices[i+2]], ka, kd, ks, kr));
+      vec3 A = trim_to_vec3(trans * expand_to_vec4(vertices[indices[i]]));
+      vec3 B = trim_to_vec3(trans * expand_to_vec4(vertices[indices[i+1]]));
+      vec3 C = trim_to_vec3(trans * expand_to_vec4(vertices[indices[i+2]]));
+      primitives.push_back(new triangle(A, B, C, ka, kd, ks, kr));
     }
   }
   return true;

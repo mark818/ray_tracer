@@ -134,7 +134,7 @@ int __cdecl main(int argc, char *argv[]) {
         if (!ss.eof()) {
           cerr << "Extra paramters.\n";
         } 
-        obj_parser parser(scene_name, ka, kd, ks, kr);
+        obj_parser parser(scene_name, ka, kd, ks, kr, cur_matrix);
         vector<primitive *>from_file = parser.parse();
         primitives.insert(primitives.end(), from_file.begin(), from_file.end());
       } else {
