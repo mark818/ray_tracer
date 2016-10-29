@@ -26,15 +26,11 @@ Argument NOTE
 2. first mat then triangle
 3. area light input, the last argument needs to be perfect square
 
-main.cpp:
-
-blank as extra argument
-
-todo: 
-change max_leaf
 
 EXTRA CREDIT：
 • Use some reasonable method for accelerating ray tests -- AABB & BVH
+
+• Area light
 
 • Anti-aliasing
 
