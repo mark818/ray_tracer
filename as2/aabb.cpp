@@ -71,5 +71,5 @@ bool aabb::intersect(const ray& r, double& t0, double& t1) const {
     tmax = tzmax;
     t1 = tmax;
   }
-  return ((tmin < t1) && (tmax > t0));
+  return ((tmin <= t1) && (tmax >= t0));
 }

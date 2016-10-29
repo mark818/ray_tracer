@@ -53,8 +53,6 @@ void ray_tracer::worker(size_t left, size_t top, size_t right, size_t bottom) {
         buffer.set(i, j, color);
       }
     }
-  /*rgb color = shade_pixel(750, 650);
-  cout << endl << color.x << color.y << color.z << endl;*/
 }
 
 rgb ray_tracer::shade_pixel(size_t x, size_t y) {
@@ -100,7 +98,6 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
   double t = i->t; //distance, length
   const primitive* p = i->p;
   vec3 &n = i->n; // normalized
-  // printf("t: %f  n: %f %f %f\n", t, n.x, n.y, n.z);
 	vec3 poi = o + t*d;
 
 	rgb radiance(0, 0, 0);
@@ -125,10 +122,8 @@ rgb ray_tracer::calc_direct_light(const ray &r, intersection *i) {
       } else {
         ambient = modmul(p->ka, I);
       }
-			
-      rgb inter = modmul(p->kd, I);
-      // printf("%f %f %f\n", p->kd.x, p->kd.y, p->kd.z);
-			rgb diffuse = max(dot(l, n), 0.0)*modmul(p->kd, I);
+
+      rgb diffuse = max(dot(l, n), 0.0)*modmul(p->kd, I);
 			rgb specular = pow(max(dot(r, v), 0.0), sp)*modmul(ks_vec3, I);
 			rgb col = ambient + diffuse + specular;
 			radiance += col;
