@@ -6,9 +6,9 @@
 #include "scene.h"
 using namespace std;
 
-bvh::bvh(const std::vector<primitive*>& primitives) {
+bvh::bvh(const std::vector<primitive*>& primitives, int max_leaf): max_leaf(max_leaf) {
   clock_t time = clock();
-  root = recursive_split(primitives, 4);
+  root = recursive_split(primitives);
   time = clock() - time;
   cout << "Time taken to construct BVH of " << primitives.size() << " primitives: " << time << "ms\n";
 }
@@ -18,7 +18,7 @@ aabb* bvh::get_root() {
 }
 
 // precondition: primitives is not empty
-aabb* bvh::recursive_split(const vector<primitive*> &primitives, unsigned int max_leaf) {
+aabb* bvh::recursive_split(const vector<primitive*> &primitives) {
 	aabb box;
 	aabb centroid_box;
 
@@ -60,8 +60,8 @@ aabb* bvh::recursive_split(const vector<primitive*> &primitives, unsigned int ma
 			}
 			axis = (axis + 1) % 3;
 		} while (left.size() == 0 || right.size() == 0);
-		node->left = recursive_split(left, max_leaf);
-		node->right = recursive_split(right, max_leaf);
+		node->left = recursive_split(left);
+		node->right = recursive_split(right);
 		return node;
 	}
 }

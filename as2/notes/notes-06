@@ -1,0 +1,6 @@
+command line arguments: ./as2 < inputs/input-05
+
+This image shows scaling and reflection
+
+Time taken to construct BVH of 4 primitives: 0ms
+Time taken to render with 8 threads: 136ms

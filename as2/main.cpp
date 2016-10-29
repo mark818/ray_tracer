@@ -86,6 +86,7 @@ int __cdecl main(int argc, char *argv[]) {
   matrix4x4 cur_matrix = matrix4x4::identity();
   camera my_camera;
 
+  int max_leaf = 2;
   int depth = 0;
   int num_threads = 1;
   int msaa = 1;
@@ -290,21 +291,29 @@ int __cdecl main(int argc, char *argv[]) {
           cerr << "Extra paramters.\n";
         }
       }
+    } else if (word == "leaf") {
+      if (!ss.eof()) {
+        ss >> max_leaf;
+        if (max_leaf <= 0) {
+          msaa = 1;
+          cerr << "Unsupported feature.\n";
+        }
+        if (!ss.eof()) {
+          cerr << "Extra paramters.\n";
+        }
+      }
     } else if (word == "dof") { // target.x target.y target.z aperture.w aperture.h
       array<double, 2> arr = readline<2>(ss, &fail);
       if (!fail) {
         my_camera.set_dof(arr[0], arr[1]);
       }
     } else {
-      cerr << "Invalid dof arguments.\n"; 
+      cerr << "Invalid arguments.\n"; 
     }
     ss.clear();
   }
-  if (!scene_name.empty()) {
-   
-  }
   scene my_scene(primitives, lights, ambient_l);
-  ray_tracer my_ray_tracer(my_camera, my_scene, filename, num_threads, msaa, depth);
+  ray_tracer my_ray_tracer(my_camera, my_scene, filename, num_threads, msaa, depth, max_leaf);
   my_ray_tracer.begin();
   return 0;
 }

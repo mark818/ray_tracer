@@ -1,0 +1,6 @@
+command line arguments: ./as2 < inputs/input-03
+
+This images shows rotation and translation
+
+Time taken to construct BVH of 15960 primitives: 19ms
+Time taken to render with 8 threads: 599ms

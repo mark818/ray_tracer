@@ -1,0 +1,6 @@
+command line arguments: ./as2 < inputs/input-07
+
+This image shows area light, you can see obvious umbra and penumbra
+
+Time taken to construct BVH of 3193 primitives: 4ms
+Time taken to render with 8 threads: 2192ms

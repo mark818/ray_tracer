@@ -1,0 +1,32 @@
+command line arguments: ./as2 < inputs/input-01
+
+we show the speed differences due to our optimization by varying:
+(x be any positive integer)
+leaf size of Bounding Volume Hierarchy (command "leaf x")
+number of samples per pixel used to anti-aliase (command "aa x")
+threads usd (command "t x")
+
+
+The following are several combintaion of setups we run, with time recorded:
+
+leaf 100000
+aa 1
+t 1
+
+Time taken to construct BVH of 3192 primitives: 0ms
+Time taken to render with 1 thread: 98417ms
+
+leaf 4 (originally 100000)
+aa 1
+t 1
+
+Time taken to construct BVH of 3192 primitives: 3ms
+Time taken to render with 1 threads: 1311ms
+
+leaf 4
+aa 1
+t 8 (originally 1)
+
+Time taken to construct BVH of 3192 primitives: 4ms
+Time taken to render with 8 threads: 391ms
+

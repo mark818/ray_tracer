@@ -1,0 +1,6 @@
+command line arguments: ./as2 < inputs/input-05
+
+This image shows directional light, reflection and shadow
+
+Time taken to construct BVH of 3194 primitives: 4ms
+Time taken to render with 8 threads: 596ms

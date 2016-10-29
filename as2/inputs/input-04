@@ -8,10 +8,9 @@ ltp 10 10 -20 0.4 0.2 0.6
 ltp 0 0 45 0.9 0.1 0.5
 
 mat 0.1 0.1 0.1 0.8 0.8 0.8 0.2 0.2 0.2 300 0.9 0.9 0.9
-obj teddy.obj
+obj ../obj/teddy.obj
 
-size 2000
-aa 1
+size 1000
 t 8
 
-save input-03.png
+save ../images/image-04.png

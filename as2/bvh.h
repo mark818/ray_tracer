@@ -6,12 +6,12 @@
 class bvh {
 public:
 
-  bvh(const std::vector<primitive*> &primitives);
+  bvh(const std::vector<primitive*> &primitives, int max_leaf);
  
 
   aabb* get_root();
 
-  aabb* recursive_split(const std::vector<primitive*> &primitives, unsigned int max_leaf);
+  aabb* recursive_split(const std::vector<primitive*> &primitives);
 
   bool intersect(const ray& r, aabb* node, const primitive *p);
 
@@ -19,6 +19,7 @@ public:
 
 private:
   aabb* root;
+  int max_leaf = 2;
   /* data */
 };
 

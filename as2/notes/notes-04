@@ -1,0 +1,6 @@
+command line arguments: ./as2 < inputs/input-04
+
+This images shows phong shading with point light
+
+Time taken to construct BVH of 3192 primitives: 6ms
+Time taken to render with 8 threads: 780ms
