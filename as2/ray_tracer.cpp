@@ -9,26 +9,13 @@
 using namespace std;
 
 void ray_tracer::begin() {
-  if (my_camera.has_dof()) {
-    unsigned int counter = 0;
-    double v_step = 0.02;
-    double h_step = 0.02;
-    for (double ver = -my_camera.aperture_h / 2; ver <= my_camera.aperture_h / 2; ver += v_step) {
-      for (double hor = -my_camera.aperture_w / 2; hor <= my_camera.aperture_w / 2; hor += h_step) {
-        my_camera.rotate_right(hor);
-        my_camera.rotate_down(ver);
-        dispatch();
-        counter++;
-      }
-    }
-    buffer.write_to_png(filename.c_str());
-  } else {
-    clock_t time = clock();
-    dispatch();
-    time = clock() - time;
-    cout << "Time taken to render with " << num_threads << " threads: " << time << "ms\n";
-    buffer.write_to_png(filename.c_str());
-  }
+  if (my_camera.has_dof())
+    this->shade_method = &ray_tracer::shade_with_depth;
+  clock_t time = clock();
+  dispatch();
+  time = clock() - time;
+  cout << "Time taken to render with " << num_threads << " threads: " << time << "ms\n";
+  buffer.write_to_png(filename.c_str());
 }
 
 void ray_tracer::dispatch() {
@@ -48,12 +35,13 @@ void ray_tracer::dispatch() {
 void ray_tracer::worker(size_t left, size_t top, size_t right, size_t bottom) {
     for (size_t j = top; j < bottom; j++) {
       for (size_t i = left; i < right; i++) {
-        rgb color = shade_pixel(i, j);
+        rgb color = (this->*shade_method)(i, j);
         const vec3 v;
         buffer.set(i, j, color);
       }
     }
 }
+
 
 rgb ray_tracer::shade_pixel(size_t x, size_t y) {
   double sqrt_msaa = sqrt(msaa);
@@ -71,6 +59,24 @@ rgb ray_tracer::shade_pixel(size_t x, size_t y) {
   // printf("get pixel's color: %zu %zu: %f %f %f\n", x, y, color.x, color.y, color.z);
   // }
   return (color/msaa);
+}
+
+
+rgb ray_tracer::shade_with_depth(size_t x, size_t y) {
+  double sqrt_msaa = sqrt(msaa);
+  rgb color(0, 0, 0);
+  for (int i = 0; i < sqrt_msaa; ++i) {
+    for (int j = 0; j < sqrt_msaa; ++j) {
+      double u = (x + (i / sqrt_msaa)) / my_camera.screen_w;
+      double v = (y + (j / sqrt_msaa)) / my_camera.screen_h;
+      vector<ray> bundle = my_camera.generate_ray_bundle(u, v);
+      for (ray r : bundle) {
+        r.depth = depth;
+        color += trace_ray(r);
+      }
+    }
+  }
+  return color / (msaa * 9);
 }
 
 // ray here is like eye ray

@@ -26,7 +26,11 @@ public:
 private:
   void dispatch();
   void worker(size_t left, size_t top, size_t right, size_t bottom);
+
+  rgb (ray_tracer::*shade_method) (size_t x, size_t y) = &ray_tracer::shade_pixel;
   rgb shade_pixel(size_t x, size_t y);
+  rgb shade_with_depth(size_t x, size_t y);
+
   rgb trace_ray(const ray &r);
   rgb calc_direct_light(const ray &r, intersection *i);
   rgb calc_indrect_light(const ray &r, intersection *i);
