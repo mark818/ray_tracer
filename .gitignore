@@ -246,3 +246,5 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 /as2.zip
+*.cd
+*.dgml

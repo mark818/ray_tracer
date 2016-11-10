@@ -20,7 +20,7 @@ public:
     vector<size_t> pixels;
     pixels.reserve(width * height);
     
-    for (auto i = 0; i < width * height; i++) {
+    for (unsigned int i = 0; i < width * height; i++) {
       const rgb &color = data[i];
       size_t compressed = 0;
       compressed += (255 << 24)
