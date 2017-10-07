@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <cmath>
 
+using namespace std;
+
 void aabb::expand(const aabb& box) {
   min.x = std::min(min.x, box.min.x);
   min.y = std::min(min.y, box.min.y);
